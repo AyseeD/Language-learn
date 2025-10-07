@@ -18,9 +18,6 @@ app.use(bodyParser.json({ limit: "20mb" }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.get("/", (req, res) => res.render(titles.main));
-app.get("/draw", (req, res) => res.render(titles.draw));
-
 app.get("/", (req,res)=>{
     res.render("main.ejs");
 });
