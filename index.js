@@ -44,35 +44,24 @@ app.post("/submit-drawing", async (req, res) => {
       return res.status(400).send("Invalid image data");
     }
 
-    const base64Data = imgData.replace(/^data:image\/png;base64,/, "");
-    const uploadsDir = path.join(__dirname, "public", "uploads");
-    fs.mkdirSync(uploadsDir, { recursive: true });
+    console.log("Received image data, length:", imgData.length);
 
-    const filename = `drawing-${Date.now()}.png`;
-    const filePath = path.join(uploadsDir, filename);
-    fs.writeFileSync(filePath, base64Data, "base64");
-    console.log("Saved drawing to", filePath);
-
-    // Send to Python API for prediction
-    const formData = new FormData();
-    formData.append("file", fs.createReadStream(filePath));
-
-    const response = await axios.post("http://localhost:5001/predict", formData, {
-      headers: formData.getHeaders(),
+    // Send base64 directly to Flask (bypass file upload issues)
+    const response = await axios.post("http://localhost:5001/predict-base64", {
+      image: imgData
     });
 
-    // Combine local URL + prediction result
+    console.log("Received prediction:", response.data);
+
     res.json({
-      url: `/uploads/${filename}`,
       prediction: response.data,
     });
 
   } catch (err) {
     console.error("Error in /submit-drawing:", err);
-    res.status(500).send("Server error saving or predicting image");
+    res.status(500).send("Server error predicting image");
   }
 });
-
 
 app.listen(port, ()=>{
     console.log(`Listening to port: ${port}`);
