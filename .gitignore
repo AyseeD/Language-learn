@@ -1,3 +1,9 @@
 node_modules
 
 public/uploads
+
+.DS_Store
+
+Model Training Kanji.ipynb
+
+kkanji_filtered

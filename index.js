@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import FormData from "form-data";
+
 
 const app = express();
 const port = 3000;
@@ -35,36 +37,42 @@ app.get("/japan", (req,res)=>{
 })
 
 // POST endpoint to receive the drawing
-app.post("/submit-drawing", (req, res) => {
-    try {
-      const imgData = req.body.image;
-      if (!imgData || !imgData.startsWith("data:image/png;base64,")) {
-        return res.status(400).send("Invalid image data");
-      }
-  
-      // strip off the data-URI prefix to get just the base64-encoded bytes
-      const base64Data = imgData.replace(/^data:image\/png;base64,/, "");
-  
-      // ensure the uploads folder exists
-      const uploadsDir = path.join(__dirname, "public", "uploads");
-      fs.mkdirSync(uploadsDir, { recursive: true });
-  
-      // name file with timestamp (or use uuid)
-      const filename = `drawing-${Date.now()}.png`;
-      const filePath = path.join(uploadsDir, filename);
-  
-      // write the binary file
-      fs.writeFileSync(filePath, base64Data, "base64");
-      console.log("Saved drawing to", filePath);
-  
-      // respond with the URL where the image is now accessible
-      res.json({ url: `/uploads/${filename}` });
-    } catch (err) {
-      console.error("Error in /submit-drawing:", err);
-      res.status(500).send("Server error saving image");
+app.post("/submit-drawing", async (req, res) => {
+  try {
+    const imgData = req.body.image;
+    if (!imgData || !imgData.startsWith("data:image/png;base64,")) {
+      return res.status(400).send("Invalid image data");
     }
-  });
-  
+
+    const base64Data = imgData.replace(/^data:image\/png;base64,/, "");
+    const uploadsDir = path.join(__dirname, "public", "uploads");
+    fs.mkdirSync(uploadsDir, { recursive: true });
+
+    const filename = `drawing-${Date.now()}.png`;
+    const filePath = path.join(uploadsDir, filename);
+    fs.writeFileSync(filePath, base64Data, "base64");
+    console.log("Saved drawing to", filePath);
+
+    // Send to Python API for prediction
+    const formData = new FormData();
+    formData.append("file", fs.createReadStream(filePath));
+
+    const response = await axios.post("http://localhost:5001/predict", formData, {
+      headers: formData.getHeaders(),
+    });
+
+    // Combine local URL + prediction result
+    res.json({
+      url: `/uploads/${filename}`,
+      prediction: response.data,
+    });
+
+  } catch (err) {
+    console.error("Error in /submit-drawing:", err);
+    res.status(500).send("Server error saving or predicting image");
+  }
+});
+
 
 app.listen(port, ()=>{
     console.log(`Listening to port: ${port}`);
