@@ -6,4 +6,4 @@ Start the app using "npm start" then go to [local](http://localhost:3000/) on yo
 
 To start the Kanji predicter model open another terminal (Do not close the aapp running terminal) and type the python command "python predict_api.py", this will allow the model to predict srawn kanjis.
 
-# NOTE: Depending on the system if you are using mac which has python 3.x.x then run this command instead for the model: "python3 predict_api.py"
+### NOTE: Depending on the system if you are using mac which has python 3.x.x then run this command instead for the model: "python3 predict_api.py"
