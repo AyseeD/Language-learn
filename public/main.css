@@ -1,0 +1,42 @@
+:root{
+    --dark-blue:#253054;
+    --light-yellow: #F4E39A;
+    --bright-red: #ff0000;
+    --red: #cc2727;
+    --dark-red: #941515;
+    --blue:#334B89;
+    --mustard-yellow: #E7A72C;
+    --light-warm-gray: #FDEECD;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--light-warm-gray);
+}
+
+#header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px;
+    margin: 20px 10px;
+}
+
+a{
+    text-decoration: none;
+}
+
+#nav{
+    display: flex;
+    text-decoration: none;
+    list-style: none;
+    gap: 20px;
+}
+
+#nav li:visited{
+    color: white;
+}
