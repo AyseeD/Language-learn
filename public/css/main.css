@@ -1,12 +1,12 @@
 :root{
     --dark-blue:#253054;
     --light-yellow: #F4E39A;
-    --bright-red: #ff0000;
-    --red: #cc2727;
+    --red: #b41c1c;
     --dark-red: #941515;
-    --blue:#334B89;
+    --blue:#93b2ff;
     --mustard-yellow: #E7A72C;
-    --light-warm-gray: #FDEECD;
+    --light-warm-gray: #e5e5e5;
+    --dark-cold-gray: #333337;
 }
 
 *{
@@ -14,7 +14,7 @@
 }
 
 body{
-    background-color: var(--light-warm-gray);
+    background-color: var(--dark-cold-gray);
 }
 
 #header{
@@ -24,17 +24,17 @@ body{
     justify-content: space-between;
     border-radius: 20px;
     margin: 20px 10px;
-    color: var(--dark-blue);
+    color: var(--light-warm-gray);
 }
 
 a{
     text-decoration: none;
     font-size: 18px;
-    color: var(--dark-blue);
+    color: var(--light-warm-gray);
 }
 
 li a:hover{
-    color: var(--mustard-yellow);
+    color: var(--red);
     cursor: pointer;
     text-decoration: underline;
 }
@@ -47,7 +47,7 @@ li a:hover{
 }
 
 #logo:hover{
-    color: var(--mustard-yellow);
+    color: var(--blue);
     cursor: pointer;
 }
 
@@ -89,67 +89,58 @@ li a:hover{
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--bright-red);
+    transform: translateX(-75%);
+    background-color: var(--red);
     width: 800px;
     height: 800px;
     border-radius: 50%;
     z-index: 2;
 }
 
-#introCircleShadow{
-    position: absolute;
-    top: 0;
-    left: 27.5%;
-    background-color: var(--dark-blue);
-    width: 800px;
-    height: 800px;
-    z-index: -2;
-    border-radius: 50%;
-}
-
 #gridDistorted{
     position: absolute;
     top: 0;
     left: 27%;
-    transform: translateX(-50%);
-    width: 690px;    
-    height: 700px;        
+    transform: translateX(-75%);
+    width: 550px;    
+    height: 650px;        
     z-index: -1;
 }
 
-
-#koiFish {
-    position: absolute;
-    top: 120px;
-    left: 52%;
-    transform: translate(-150%, -30%) scaleX(-1) rotate(-20deg);
-    z-index: 3;
-    width: 350px;
-    opacity: 95%;
-}
-
-#koiFish2 {
-    position: absolute;
-    top: 120px;
-    left: 52%;
-    transform: translate(30%, 70%) scaleY(-1) rotate(-15deg);
-    z-index: 3;
-    width: 350px;
-    opacity: 95%;
-}
-
 #japaneseTitle{
-    font-size: 240px;
+    color: var(--light-warm-gray);
+    font-size: 120px;
     font-weight: bold;
     position: absolute;
     text-wrap: wrap;
-    width: 15%;
+    width: 10%;
     top: 0;
     left: 50%;
-    transform: translate(-45%, -30%);
+    transform: translate(-320%, -25%);
     z-index: 4;
-    text-shadow: 5px 3px var(--light-yellow);
+    line-height: 120px;
+    text-shadow: 5px 3px var(--dark-blue);
+}
+
+#japaneseTitle2{
+    color: var(--light-warm-gray);
+    font-size: 30px;
+    font-weight: bold;
+    position: absolute;
+    text-wrap: wrap;
+    top: 0;
+    left: 60%;
+    transform: translate(-300%, -25%);
+    z-index: 4;
+    text-shadow: 5px 3px var(--dark-blue);
+}
+
+#temple{
+    position: absolute;
+    top: 10%;
+    right: 31%;
+    width: 630px;
+    z-index: 5;
 }
 
 #mainText{
