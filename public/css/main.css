@@ -1,6 +1,7 @@
 :root{
     --dark-blue:#253054;
     --light-yellow: #F4E39A;
+    --bright-red:#ff0000dd;
     --red: #b41c1c;
     --dark-red: #941515;
     --blue:#93b2ff;
@@ -34,7 +35,7 @@ a{
 }
 
 li a:hover{
-    color: var(--red);
+    color: var(--bright-red);
     cursor: pointer;
     text-decoration: underline;
 }
@@ -64,7 +65,7 @@ li a:hover{
 }
 
 #login {
-    background-color: var(--dark-blue);
+    background-color: var(--red);
     padding: 10px 15px;
     border-radius: 20px;
 }
@@ -74,7 +75,7 @@ li a:hover{
 }
 
 #login:hover {
-    background-color: var(--blue);
+    background-color: var(--dark-red);
     cursor: pointer;
 }
 
@@ -104,7 +105,7 @@ li a:hover{
     transform: translateX(-75%);
     width: 550px;    
     height: 650px;        
-    z-index: -1;
+    z-index: -2;
 }
 
 #japaneseTitle{
@@ -128,9 +129,9 @@ li a:hover{
     font-weight: bold;
     position: absolute;
     text-wrap: wrap;
-    top: 0;
+    top: 10%;
     left: 60%;
-    transform: translate(-300%, -25%);
+    transform: translate(-300%, -10%);
     z-index: 4;
     text-shadow: 5px 3px var(--dark-blue);
 }
@@ -145,27 +146,28 @@ li a:hover{
 
 #mainText{
     position: absolute;
-    bottom: 20%;
-    right: 10px;
+    bottom: 50%;
+    right: 60px;
 }
 
 #mainText > p{
     width: 400px;
-    font-size: 20px;
+    font-size: 30px;
     text-wrap: wrap;
     word-spacing: 10px;
+    color: var(--light-warm-gray);
 }
 
 #mainText > a{
     float: right;
     margin-right: 30px;
-    color: var(--dark-red);
+    color: var(--blue);
     font-weight: bolder;
     font-size: 19px;
 }
 
 #mainText > a:hover{
-    text-shadow: 5px 3px rgb(174, 174, 174);
-    color: var(--blue);
+    text-shadow: 5px 3px rgb(0, 0, 0);
+    color: white;
     cursor: pointer;
 }
