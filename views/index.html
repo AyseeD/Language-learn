@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Japanese Writing App</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../public/style.css">
 </head>
 <body>
 
+
+<!-- NavBar -->
 <nav class="navbar">
     <div class="nav-left">
-        <img src="temple.svg" class="nav-logo" alt="logo">
+        <img src="../public/images/temple.svg" class="nav-logo" alt="logo">
         <span class="nav-title">KanjiLearn</span>
     </div>
 
@@ -21,7 +23,8 @@
 
 
     <div class="nav-right">
-        <button class="signup-btn">Sign Up</button>
+        <a href="login.html" class="signup-btn">Sign Up</a>
+        <!-- <button class="signup-btn">Sign Up</button> -->
     </div>
 </nav>
 
@@ -30,17 +33,17 @@
 <div class="hero">
     <div class="bg"></div>
 
-    <!-- Tapınak resmi -->
-    <img src="temple.svg" class="temple" alt="Japanese Temple">
+    <!-- Temple Image -->
+    <img src="../public/images/temple.svg" class="temple" alt="Japanese Temple">
 
     <!-- Hero Text -->
     <div class="hero-text">
         <h1>Learn Japanese Characters with AI</h1>
         <p>Master kanji and hiragana writing through intelligent stroke-by-stroke guidance.</p>
-        <button class="cta-button">Start Learning</button>
+        <a href="login.html" class="cta-button">Start Learning</a>
     </div>
 </div>
 
-<script src="app.js"></script>
+<script src="../app.js"></script>
 </body>
 </html>

@@ -70,12 +70,11 @@ body {
     background: linear-gradient(135deg, #3d3a3b, #000000);
     border-radius: 30px;
     border: none;
-
+    text-decoration: none;
     color: white;
     cursor: pointer;
     font-size: 14px;
     letter-spacing: 0.3px;
-
     box-shadow: 0 0 10px rgba(255, 60, 60, 0.35);
     transition: 0.25s ease;
 }
@@ -157,15 +156,16 @@ body {
     cursor: pointer;
     font-size: 15px;
     opacity: 0;
+    text-decoration: none;
     transform: translateY(10px);
     transition: opacity 1.3s ease, transform 1.3s ease;
     background: linear-gradient(135deg, #ea0f21, #e04121);
 }
 
 .cta-button:hover {
-    background: #ffffff;
-    color: #0b0b0b;
-    transform: translateY(-3px);
+    background: #0b0b0b;
+    color: #fff;
+    transform: translateY(-2px);
     box-shadow: 0 0 18px rgba(255, 60, 60, 0.45);
 }
 
