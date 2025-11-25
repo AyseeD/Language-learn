@@ -112,6 +112,8 @@
   cursor: pointer;
   font-size: 14px;
   transition: 0.2s;
+  text-decoration: none;
+  color: #000;
 }
 
 .study-btn:hover,
