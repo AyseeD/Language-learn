@@ -1,8 +1,6 @@
 window.onload = () => {
-    // Arkaplan fade
     document.querySelector(".bg").style.opacity = "1";
 
-    // Tapınak aşağıdan yukarı
     const temple = document.querySelector(".temple");
     temple.style.bottom = "40px";
     temple.style.opacity = "1";

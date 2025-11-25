@@ -1,0 +1,120 @@
+/* HOME PAGE THEME */
+.writing-body {
+  margin: 0;
+  background: 
+    radial-gradient(circle at 50% 10%, rgba(255,60,60,0.28), transparent 65%),
+    linear-gradient(180deg, #ff8888, #db3b3b);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+/* CENTER HERO */
+.home-hero {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 50px;
+  padding: 0 20px;
+}
+
+.home-hero h1 {
+  font-size: 40px;
+  margin: 0;
+  font-weight: 700;
+  color: #fff;
+}
+
+.home-hero p {
+  color: #e3e3e3;
+  font-size: 16px;
+  max-width: 720px;
+  margin: 12px auto 0;
+  line-height: 1.5;
+}
+
+.hero-temple-icon {
+  width: 130px;
+  display: block;
+  margin: 0 auto 12px auto;
+  opacity: 0.9;
+}
+
+
+
+/* LOGOUT BUTTON */
+.logout-container {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  z-index: 50;
+}
+
+.logout-btn {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  padding: 8px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.logout-btn:hover {
+  background: #f8f8f8;
+  border-color: #d5d5d5;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+
+
+/* GRID SECTION */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 0 40px 40px;
+}
+
+/* CARDS */
+.learn-card {
+  background: #ffffff;
+  color: #000;
+  border-radius: 14px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.learn-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 34px rgba(0,0,0,0.3);
+}
+
+.jp {
+  font-size: 34px;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+/* BUTTONS */
+.study-btn,
+.quiz-btn {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 8px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.study-btn:hover,
+.quiz-btn:hover {
+  background: #f5f5f5;
+}
