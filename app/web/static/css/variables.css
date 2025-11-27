@@ -1,0 +1,20 @@
+:root {
+    --color-japan-100: #C56969;
+    --color-japan-200: #E33836;
+    --color-japan-300: #C12020;
+    --color-japan-400: #971817;
+    --color-japan-500: #841515;
+    --color-japan-600: #711212;
+    --color-japan-700: #21150E;
+    --color-japan-800: #060100;
+
+    --color-gray-100: #F8F9FA;
+    --color-gray-200: #E9ECEF;
+    --color-gray-300: #DEE2E2;
+    --color-gray-400: #CED4DA;
+    --color-gray-500: #ADB5BD;
+    --color-gray-600: #6C757D;
+    --color-gray-700: #495057;
+    --color-gray-800: #343A40;
+    --color-gray-900: #212529;
+}

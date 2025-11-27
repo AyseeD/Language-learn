@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <title>Login • KanjiLearn</title>
-    <link rel="stylesheet" href="/css/login.css">
-</head>
-<body class="login-body">
-<a href="/" class="back-btn">← Back</a>
+{% extends "layout.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/css/auth.css">
+{% endblock %}
+
+{% block content %}
 <div class="login-wrapper">
-    <div class="login-card">
+    <div class="register-card">
 
         <img src="/img/temple.svg" alt="Logo" class="login-logo">
 
@@ -26,5 +25,4 @@
         </form>
     </div>
 </div>
-</body>
-</html>
+{% endblock %}

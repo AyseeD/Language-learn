@@ -1,0 +1,97 @@
+{% macro hero() -%}
+    <div class="hero">
+        <div class="bg"></div>
+
+        <img src="/img/temple.svg" class="temple" alt="Japanese Temple">
+
+        <div class="hero-text">
+            <h1>Learn Japanese Characters with AI</h1>
+            <p>Master kanji and hiragana writing through intelligent stroke-by-stroke guidance.</p>
+            <a href="{{ url_for('auth.register') }}" class="hero-cta-button">Start Learning</a>
+        </div>
+    </div>
+
+    <style>
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            padding-top: 80px; /* navbar alanı */
+        }
+
+        /* Background */
+        .bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            background: radial-gradient(circle at 50% 10%, rgba(255, 60, 60, 0.28), transparent 65%),
+            linear-gradient(180deg, #e82323, #000);
+        }
+
+
+        .temple {
+            position: absolute;
+            bottom: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            opacity: 0;
+            transition: bottom 1.8s ease-out,
+            opacity 1.3s ease-out;
+        }
+
+        /* Hero text */
+        .hero-text {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            top: 25%;
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
+        }
+
+        .hero-text h1 {
+            font-size: 52px;
+            letter-spacing: 2px;
+            font-weight: 600;
+            text-shadow: 0px 3px 8px rgba(0, 0, 0, 0.35);
+            margin-bottom: 12px;
+        }
+
+        .hero-text p {
+            color: #e6e6e6;
+            font-size: 17px;
+            line-height: 1.4;
+        }
+
+        .hero-cta-button {
+            padding: 10px 24px;
+            position: relative;
+            top: 17px;
+            border-radius: 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+            opacity: 1;
+            text-decoration: none;
+            transform: translateY(10px);
+            transition: opacity 1.3s ease, transform 1.3s ease, background-color 0.2s;
+        }
+
+        .hero-cta-button:hover {
+            background: #0b0b0b;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 0 18px rgba(255, 60, 60, 0.45);
+        }
+
+        .temple {
+            bottom: -90px;
+            filter: drop-shadow(0px 0px 12px rgba(255, 80, 80, 0.35));
+        }
+    </style>
+{%- endmacro %}

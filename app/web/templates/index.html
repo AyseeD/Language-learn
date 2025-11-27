@@ -1,52 +1,16 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <title>Japanese Writing App</title>
+{% extends "layout.html" %}
+{% from 'components/hero.html' import hero %}
+
+{% block head %}
+    {{ super() }}
     <link rel="stylesheet" href="/css/index.css">
-</head>
-<body>
+{% endblock %}
 
+{% block content %}
+    {{ hero() }}
+{% endblock %}
 
-<!-- NavBar -->
-<nav class="navbar">
-    <div class="nav-left">
-        <img src="/img/temple.svg" class="nav-logo" alt="logo">
-        <span class="nav-title">KanjiLearn</span>
-    </div>
-
-    <div class="nav-center">
-        <a href="#">Home</a>
-        <a href="#">About Us</a>
-        <a href="#">Contact Us</a>
-    </div>
-
-
-    <div class="nav-right">
-        {% if current_user.is_authenticated %}
-            <a href="{{ url_for('auth.logout') }}" class="signup-btn">Log Out</a>
-        {% else %}
-            <a href="{{ url_for('auth.login') }}" class="signup-btn">Log In</a>
-        {% endif %}
-        <a href="{{ url_for('auth.register') }}" class="signup-btn">Sign Up</a>
-    </div>
-</nav>
-
-
-<div class="hero">
-    <div class="bg"></div>
-
-    <!-- Temple Image -->
-    <img src="/img/temple.svg" class="temple" alt="Japanese Temple">
-
-    <!-- Hero Text -->
-    <div class="hero-text">
-        <h1>Learn Japanese Characters with AI</h1>
-        <p>Master kanji and hiragana writing through intelligent stroke-by-stroke guidance.</p>
-        <a href="auth/register" class="cta-button">Start Learning</a>
-    </div>
-</div>
-
-<script src="/js/index.js"></script>
-</body>
-</html>
+{% block scripts %}
+    {{ super() }}
+    <script src="/js/index.js"></script>
+{% endblock %}

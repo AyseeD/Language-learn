@@ -1,0 +1,32 @@
+{% from 'components/guest-navbar.html' import navBar %}
+
+<!doctype html>
+
+<head>
+    <title>{% block title %}{% endblock %} - Language Learning Hub</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    {% block head %}{% endblock %}
+</head>
+
+{% block body %}
+<body>
+    {{ navBar() }}
+
+    <section class="content">
+    {% block content %}{% endblock %}
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+    </section>
+
+    {% block scripts %}{% endblock %}
+</body>
+{% endblock %}

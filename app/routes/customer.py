@@ -7,10 +7,10 @@ customer = Blueprint('customer', __name__)
 @login_required
 @customer.route('/courses', methods=['GET'])
 def courses():
-    return render_template('courses.html')
+    return render_template('customer/courses.html')
 
 
 @login_required
 @customer.route('/kanji/draw', methods=['GET'])
 def kanji():
-    return render_template('draw.html')
+    return render_template('customer/draw.html')

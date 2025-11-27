@@ -6,8 +6,8 @@ from app import User
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()], render_kw={"placeholder": "Username"})
-    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Password"})
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')
 
@@ -18,8 +18,7 @@ class RegistrationForm(FlaskForm):
         DataRequired(),
         Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
                'Usernames must have only letters, numbers, dots or underscores')
-    ],
-                           render_kw={"placeholder": "Username"})
+    ])
     password = PasswordField('Password',
                              validators=[DataRequired(), EqualTo('confirmation', message='Passwords must match.')])
     confirmation = PasswordField('Confirm password', validators=[DataRequired()])
