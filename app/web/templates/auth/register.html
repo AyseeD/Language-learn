@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Login • KanjiLearn</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body class="login-body">
+<a href="/" class="back-btn">← Back</a>
+<div class="login-wrapper">
+    <div class="login-card">
+
+        <img src="/img/temple.svg" alt="Logo" class="login-logo">
+
+        <h2 class="login-title">Sign In</h2>
+
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.name.label }} {{ form.name(class='login-input') }}
+            {{ form.username.label }} {{ form.username(class='login-input') }}
+            {{ form.password.label }} {{ form.password(class='login-input') }}
+            {{ form.confirmation.label }} {{ form.confirmation(class='login-input') }}
+            {{ form.csrf_token }}
+            {{ form.submit(class_="login-btn") }}
+        </form>
+    </div>
+</div>
+</body>
+</html>

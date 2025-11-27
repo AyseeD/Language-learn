@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Write Practice</title>
+    <link rel="stylesheet" href="/css/draw.css"/>
+</head>
+
+<body>
+<!-- TOP BAR -->
+<div class="top-bar">
+    <a href="{{ url_for('customer.courses') }}" class="nav-btn" id="backBtn">← Back</a>
+    <a href="{{ url_for('customer.courses') }}" class="nav-btn" id="finishBtn">Finish</a>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>Practice Japanese Characters</h1>
+    <p class="subtitle">
+        Draw the character inside the frame. Our AI evaluates your accuracy.
+    </p>
+</div>
+
+<!-- CHARACTER DISPLAY SECTION -->
+<div class="char-display">
+    <div class="char-header">
+        <span class="char-title">Today's Character</span>
+        <span class="char-refresh" id="refreshChar">↻</span>
+    </div>
+
+    <div class="char-symbol" id="randomChar">あ</div>
+    <div class="char-type" id="charType">Hiragana • Basic</div>
+</div>
+
+<!-- CANVAS CARD -->
+<div class="card">
+    <h2 class="card-title">Draw Your Answer</h2>
+
+    <canvas id="drawCanvas" width="500" height="300"></canvas>
+
+    <!-- Prediction box -->
+    <div id="resultBox" class="prediction-box" style="display: none">
+        <p><strong>Prediction:</strong> <span id="predictedKanji">...</span></p>
+        <p><strong>Confidence:</strong> <span id="confidence">...</span></p>
+        <p id="debugInfo" class="debug-info"></p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="btn-row">
+        <button id="clearBtn" class="btn btn-clear">Clear</button>
+        <button id="undoBtn" class="btn btn-undo" disabled>Undo</button>
+        <button id="submitBtn" class="btn btn-submit">Submit</button>
+    </div>
+</div>
+
+<script src="/js/draw.js"></script>
+</body>
+</html>

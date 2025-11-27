@@ -1,0 +1,176 @@
+const canvas = document.getElementById("drawCanvas");
+const ctx = canvas.getContext("2d");
+
+// ✅ INITIALIZE CANVAS WITH WHITE BACKGROUND
+function initializeCanvas() {
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 10; // ✅ Thicker strokes for better visibility
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#000000"; // ✅ Pure black strokes
+}
+
+initializeCanvas();
+
+let drawing = false;
+let lastX = 0;
+let lastY = 0;
+const undoStack = [];
+
+function startDrawing(e) {
+  // Save current state for undo
+  undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+  document.getElementById("undoBtn").disabled = false;
+
+  drawing = true;
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+
+  // Draw a dot at the start point
+  ctx.beginPath();
+  ctx.arc(lastX, lastY, ctx.lineWidth / 2, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function draw(e) {
+  if (!drawing) return;
+
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+}
+
+function stopDrawing() {
+  drawing = false;
+}
+
+function undo() {
+  if (undoStack.length === 0) return;
+  const imageData = undoStack.pop();
+  ctx.putImageData(imageData, 0, 0);
+  if (undoStack.length === 0)
+    document.getElementById("undoBtn").disabled = true;
+}
+
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseout", stopDrawing);
+
+// Touch support
+canvas.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches[0];
+  undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+  document.getElementById("undoBtn").disabled = false;
+
+  lastX = touch.clientX - rect.left;
+  lastY = touch.clientY - rect.top;
+  drawing = true;
+
+  // Draw a dot at the start point
+  ctx.beginPath();
+  ctx.arc(lastX, lastY, ctx.lineWidth / 2, 0, Math.PI * 2);
+  ctx.fill();
+});
+
+canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+  if (!drawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches[0];
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(x, y);
+  ctx.stroke();
+
+  [lastX, lastY] = [x, y];
+});
+
+canvas.addEventListener("touchend", stopDrawing);
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  initializeCanvas(); // ✅ Reset to white background
+  undoStack.length = 0;
+  document.getElementById("undoBtn").disabled = true;
+  document.getElementById("resultBox").style.display = "none";
+});
+
+document.getElementById("undoBtn").addEventListener("click", undo);
+
+document.getElementById("submitBtn").addEventListener("click", async () => {
+  // ✅ Create a new canvas with proper background for export
+  const exportCanvas = document.createElement("canvas");
+  exportCanvas.width = canvas.width;
+  exportCanvas.height = canvas.height;
+  const exportCtx = exportCanvas.getContext("2d");
+
+  // ✅ Fill with white background first
+  exportCtx.fillStyle = "white";
+  exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+  // ✅ Then draw the original canvas content
+  exportCtx.drawImage(canvas, 0, 0);
+
+  // ✅ Get the data URL from the export canvas
+  const dataURL = exportCanvas.toDataURL("image/png");
+
+  const resultBox = document.getElementById("resultBox");
+  const predictedKanji = document.getElementById("predictedKanji");
+  const confidenceEl = document.getElementById("confidence");
+  const debugInfo = document.getElementById("debugInfo");
+
+  resultBox.style.display = "block";
+  predictedKanji.textContent = "Analyzing...";
+  confidenceEl.textContent = "...";
+  debugInfo.textContent = "";
+
+  try {
+    console.log("Submitting drawing...");
+
+    const res = await fetch("/submit-drawing", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: dataURL }),
+    });
+
+    if (!res.ok) throw new Error("Server error");
+    const data = await res.json();
+
+    console.log("Received response:", data);
+
+    // Update UI with prediction
+    predictedKanji.textContent = data.prediction.kanji || "?";
+    confidenceEl.textContent =
+      (data.prediction.confidence * 100).toFixed(1) + "%";
+
+    // Show debug info if available
+    if (data.prediction.debug_info) {
+      debugInfo.textContent = `Range: ${data.prediction.debug_info.image_range}, Mean: ${data.prediction.debug_info.image_mean}`;
+    }
+  } catch (err) {
+    predictedKanji.textContent = "Error";
+    confidenceEl.textContent = "Could not predict.";
+    debugInfo.textContent = "Check console for details";
+    console.error("Submission error:", err);
+  }
+});
+
+// ✅ Test function to verify canvas is working
+function testCanvas() {
+  console.log("Testing canvas...");
+  ctx.beginPath();
+  ctx.arc(100, 100, 20, 0, Math.PI * 2);
+  ctx.stroke();
+  console.log("Test drawing complete");
+}
+
+// Run test after page loads
+// setTimeout(testCanvas, 1000);

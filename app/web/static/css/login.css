@@ -1,0 +1,123 @@
+/* LOGIN PAGE LAYOUT */
+.login-body {
+    position: absolute;
+    background: radial-gradient(circle at 50% 10%, rgba(255, 60, 60, 0.28), transparent 65%),
+    linear-gradient(180deg, #e82323, #000);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-family: sans-serif;
+}
+
+/* Back Button */
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #333;
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 10px;
+
+}
+
+.back-btn:hover {
+    opacity: 1;
+}
+
+/* Center wrapper */
+.login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* White Card */
+.login-card {
+    background: radial-gradient(circle at 50% 10%, rgb(220 183 183 / 28%), transparent 65%),
+    linear-gradient(180deg, #050505, #000);
+    width: 315px;
+    padding: 40px 35px;
+    border-radius: 20px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+/* Logo */
+.login-logo {
+    width: 55px;
+    margin-bottom: 10px;
+}
+
+/* Title */
+.login-title {
+    font-size: 22px;
+    color: #ffffff;
+    margin-bottom: 25px;
+}
+
+/* Input fields */
+.login-input {
+    width: 93%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.login-input:focus {
+    border-color: #2a7bff;
+}
+
+/* Remember me */
+.remember-me {
+    font-size: 13px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+/* Sign in button */
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ea0f21, #e04121);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.login-btn:hover {
+    background: #ffffff;
+    color: #0b0b0b;
+    transform: translateY(-3px);
+    box-shadow: 0 0 18px rgba(255, 60, 60, 0.45);
+}
+
+/* Footer text */
+.login-footer {
+    font-size: 12px;
+    color: #777;
+    margin-top: 20px;
+}
+
+.flashes {
+    color: white;
+}
