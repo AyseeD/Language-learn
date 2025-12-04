@@ -7,7 +7,7 @@ load_dotenv()
 
 class Config:
     # Database
-    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
+    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./database.sqlite")
 
     # Secret Key
     SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
