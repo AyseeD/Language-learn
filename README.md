@@ -63,19 +63,19 @@ course enrollment, and progress tracking.
 ### Clear the database
 
 ```bash
-python seed.py --clear
+python run.py --clear
 ```
 
 ### Seed the database with sample data
 
 ```bash
-python seed.py
+python run.py --seed
 ```
 
 ### Clear and seed in one command
 
 ```bash
-python seed.py --clear && python seed.py
+python run.py --clear && python run.py --seed
 ```
 
 **Default seeded users:**
