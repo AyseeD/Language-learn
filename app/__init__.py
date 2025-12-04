@@ -4,6 +4,7 @@ from flask import Flask, render_template
 from flask_login import LoginManager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from flask_cors import CORS
 
 from app.config import Config
 from app.database.models import User
@@ -58,13 +59,17 @@ def create_app():
     # Register blueprints
     from app.routes.auth import auth as auth_blueprint
     from app.routes.customer import customer as customer_blueprint
+    from app.routes.predict import prediction as prediction_blueprint
 
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(customer_blueprint, url_prefix='/dashboard')
+    app.register_blueprint(prediction_blueprint, url_prefix='/dashboard')
 
     # Index page
     @app.route('/')
     def index():
         return render_template('index.html')
+
+    CORS(app)
 
     return app
