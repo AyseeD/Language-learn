@@ -19,7 +19,7 @@
     <body>
     <nav class="navbar navbar-expand bg-transparent">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <img src="/img/temple.svg" alt="Logo" width="30" height="24"
                      class="d-inline-block align-text-top">
                 Japanese Learning Hub
@@ -33,7 +33,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto d-flex flex-row gap-4">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/#features">Features</a>
@@ -46,9 +46,12 @@
                     </li>
                 </ul>
 
-                <div class="d-flex gap-2">
-                    {% if g.user %}
-                        <span>{{ g.user['username'] }}</span>
+                <div class="d-flex gap-2 align-items-center">
+                    {% if current_user.is_authenticated %}
+                        <span>Welcome back, {{ current_user['name'] }}</span>
+                        <button type="button" class="btn btn-dark">
+                            <a href="{{ url_for('customer.courses') }}" class="text-decoration-none text-white">Dashboard</a>
+                        </button>
                         <button type="button" class="btn btn-dark">
                             <a href="{{ url_for('auth.logout') }}" class="text-decoration-none text-white">Log Out</a>
                         </button>

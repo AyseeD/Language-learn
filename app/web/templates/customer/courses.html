@@ -1,69 +1,49 @@
-{% extends "customer/layout.html" %}
-
-{% block head %}
-    {{ super() }}
-    <link rel="stylesheet" href="/css/courses.css">
-{% endblock %}
+{% extends "layout.html" %}
 
 {% block content %}
-<body class="writing-body">
-<div class="logout-container">
-    <button class="logout-btn">
-        <a href="{{ url_for('auth.logout') }}">Log Out</a>
-    </button>
-</div>
 
-<!-- HERO -->
-<section class="home-hero">
-    <img
-            src="/img/temple.svg"
-            class="hero-temple-icon"
-            alt="temple icon"
-    />
-    <h1>Japanese Writing Hub</h1>
-    <p>Practice Hiragana, Katakana, and Kanji stroke orders.</p>
-</section>
-
-<!-- MAIN GRID -->
-<section class="cards-container">
-    <!-- HIRAGANA -->
-    <div class="learn-card">
-        <h2 class="jp">ひらがな</h2>
-        <h3>Hiragana Writing</h3>
-        <p class="desc">Write and master all 46 hiragana characters.</p>
-
-        <div class="card-buttons">
-            <a href="#" class="study-btn">✏️ Start Writing</a>
+    <!-- Courses -->
+    <div id="courses" class="container px-4 py-5">
+        <h2 class="pb-2 fs-1">Choose A Courses To Study</h2>
+        <div class="container row">
+           <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/kanji.svg" class="card-img-top" alt="Kanji">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Kanji</h5>
+                        <p class="card-text">Kanji are characters borrowed from Chinese, representing entire words or
+                            concepts. They're more complex but crucial for reading and writing in Japanese.
+                        </p>
+                        <div class="d-flex btn-row gap-2" role="group" aria-label="Basic example">
+                            <a href="#" class="w-50 btn btn-danger">Learn</a>
+                            <a href="{{ url_for("prediction.index") }}" class="w-50 btn btn-danger">Practice</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/hiragana.svg" class="card-img-top" alt="Hiragana">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Hiragana</h5>
+                        <p class="card-text">Hiragana is the foundation of the Japanese writing system, used for native
+                            words, grammar, and verb endings. It's essential for beginners to learn first.</p>
+                        <a href="/#courses" class="w-100 btn btn-secondary">Coming Soon</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/katakana.svg" class="card-img-top" alt="Katakana">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Katakana</h5>
+                        <p class="card-text">Katakana is primarily used for foreign loanwords, names, and onomatopoeia.
+                            It's the second script you'll need to master after Hiragana.</p>
+                        <a href="/#courses" class="w-100 btn btn-secondary">Coming Soon</a>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <p class="char-count">46 characters</p>
     </div>
-
-    <!-- KATAKANA -->
-    <div class="learn-card">
-        <h2 class="jp">カタカナ</h2>
-        <h3>Katakana Writing</h3>
-        <p class="desc">Learn the stroke order for all katakana characters.</p>
-
-        <div class="card-buttons">
-            <a href="#" class="study-btn">✏️ Start Writing</a>
-        </div>
-
-        <p class="char-count">46 characters</p>
-    </div>
-
-    <!-- KANJI BEGINNER -->
-    <div class="learn-card">
-        <h2 class="jp">日</h2>
-        <h3>Kanji Writing (N5)</h3>
-        <p class="desc">Learn the correct stroke order for basic kanji.</p>
-
-        <div class="card-buttons">
-            <a href="{{ url_for('prediction.index') }}" class="study-btn">✏️ Start Writing</a>
-        </div>
-
-        <p class="char-count">100 kanji</p>
-    </div>
-</section>
 {% endblock %}
 
