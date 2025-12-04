@@ -1,45 +1,45 @@
 {% extends "layout.html" %}
 
-{% block head %}
-    {{ super() }}
-    <link rel="stylesheet" href="/css/auth.css">
-{% endblock %}
-
 {% block content %}
-    <div class="login-wrapper">
-    <div class="login-card">
+    <div class="text-center">
+        <div class="form-signin mx-auto" style="max-width: 400px; height: 75vh; top: 50%; transform: translateY(25%);">
+            <form action="/auth/login" method="POST">
+                <img class="mb-4" src="/img/temple.svg" alt="" width="72" height="57">
 
-        <img src="/img/temple.svg" alt="Logo" class="login-logo">
+                <h1 class="h3 mb-3 fw-normal">Please Log In</h1>
 
-        <h2 class="login-title">Please Login</h2>
+                <div class="form-floating mb-3">
+                    {{ form.username(size=20, class_="form-control", placeholder="") }}
+                    {{ form.username.label(class_="form-label") }}
+                </div>
 
-        <form class="login-form" action="/auth/login" method="POST">
-            {{ form.username.label }}
-            {{ form.username(size=20, class_="login-input") }}
+                <div class="form-floating mb-3">
+                    {{ form.password(size=20, class_="form-control", placeholder="") }}
+                    {{ form.password.label(class_="form-label") }}
+                </div>
 
-            {{ form.password.label }}
-            {{ form.password(size=20, class_="login-input") }}
+                <div class="form-check form-switch mb-3 text-start">
+                    <label class="form-check-label">
+                        {{ form.remember_me(size=20, class_="form-check-input", role="switch") }} Remember Me
+                    </label>
+                </div>
 
-            <label class="remember-me">
-                {{ form.remember_me(size=20) }} Remember Me
-            </label>
+                {{ form.csrf_token }}
 
-            {{ form.csrf_token }}
+                {{ form.submit(class_="btn btn-danger w-100") }}
 
-            {{ form.submit(class_="login-btn") }}
-
-            <div class="flashes">
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <ul class=flashes>
-                            {% for message in messages %}
-                                <li>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endwith %}
-            </div>
-        </form>
+                <div class="flashes">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class=flashes>
+                                {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}
