@@ -1,0 +1,69 @@
+{% extends "customer/layout.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/css/courses.css">
+{% endblock %}
+
+{% block content %}
+<body class="writing-body">
+<div class="logout-container">
+    <button class="logout-btn">
+        <a href="{{ url_for('auth.logout') }}">Log Out</a>
+    </button>
+</div>
+
+<!-- HERO -->
+<section class="home-hero">
+    <img
+            src="/img/temple.svg"
+            class="hero-temple-icon"
+            alt="temple icon"
+    />
+    <h1>Japanese Writing Hub</h1>
+    <p>Practice Hiragana, Katakana, and Kanji stroke orders.</p>
+</section>
+
+<!-- MAIN GRID -->
+<section class="cards-container">
+    <!-- HIRAGANA -->
+    <div class="learn-card">
+        <h2 class="jp">ひらがな</h2>
+        <h3>Hiragana Writing</h3>
+        <p class="desc">Write and master all 46 hiragana characters.</p>
+
+        <div class="card-buttons">
+            <a href="#" class="study-btn">✏️ Start Writing</a>
+        </div>
+
+        <p class="char-count">46 characters</p>
+    </div>
+
+    <!-- KATAKANA -->
+    <div class="learn-card">
+        <h2 class="jp">カタカナ</h2>
+        <h3>Katakana Writing</h3>
+        <p class="desc">Learn the stroke order for all katakana characters.</p>
+
+        <div class="card-buttons">
+            <a href="#" class="study-btn">✏️ Start Writing</a>
+        </div>
+
+        <p class="char-count">46 characters</p>
+    </div>
+
+    <!-- KANJI BEGINNER -->
+    <div class="learn-card">
+        <h2 class="jp">日</h2>
+        <h3>Kanji Writing (N5)</h3>
+        <p class="desc">Learn the correct stroke order for basic kanji.</p>
+
+        <div class="card-buttons">
+            <a href="{{ url_for('prediction.index') }}" class="study-btn">✏️ Start Writing</a>
+        </div>
+
+        <p class="char-count">100 kanji</p>
+    </div>
+</section>
+{% endblock %}
+

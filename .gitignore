@@ -1,13 +1,8 @@
-node_modules
+.idea/
+.vscode/
 
-public/uploads
+__pycache__/
 
-.DS_Store
-
-Model Training Kanji.ipynb
-
-kkanji_filtered
-
-debug_original.png
-
-debug_processed.png
+.venv/
+.env
+database.sqlite

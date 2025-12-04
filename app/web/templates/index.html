@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% from 'components/hero.html' import hero %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/css/index.css">
+{% endblock %}
+
+{% block content %}
+    {{ hero() }}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/js/index.js"></script>
+{% endblock %}
