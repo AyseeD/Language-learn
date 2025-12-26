@@ -77,7 +77,6 @@ class Character(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     kana = Column(String(255), unique=True, nullable=False)
     romaji = Column(String(255), unique=False, nullable=False)
-    audio = Column(String(255), unique=True, nullable=False)
     course_id = Column(Integer, ForeignKey("courses.id"), nullable=True)
 
     # Relationships

@@ -2,37 +2,319 @@
 
 {% block head %}
     <link rel="stylesheet" href="/css/draw.css"/>
+    <style>
+        .character-display {
+            color: #666;
+            font-size: 120px;
+            font-weight: bold;
+            margin: 30px 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .romaji-display {
+            font-size: 24px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .result-correct {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .result-incorrect {
+            background-color: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
     <div class="d-md-flex flex-md-equal w-100 position-relative" style="min-height: 95vh;">
+        <!-- Left Panel - Character Display -->
         <div class="w-50 text-bg-dark pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
-        <a href="{{ url_for('customer.courses') }}" class="btn btn-danger text-white" style="width: 100px; position: absolute; top: 10px; left: 10px;">← Back</a>
-            <div class="my-3 py-3"><h2 class="display-5">Character</h2>
-                <p class="lead">This character was randomly selected based on your progress on this course.</p></div>
-            <div class="bg-body-tertiary shadow-sm mx-auto"
-                 style="width: 80%; border-radius: 21px;">
-                <img src="{{ url_for('static', filename='img/hiragana.svg') }}" alt="Character" />
+            <a href="{{ url_for('customer.courses') }}" class="btn btn-danger text-white" style="width: 100px; position: absolute; top: 10px; left: 10px;">← Back</a>
+
+            <div class="my-3 py-3">
+                <h2 class="display-5">{{ course.name }} Practice</h2>
+                <p class="lead">Draw this character correctly to progress.</p>
+            </div>
+
+            <!-- Character Display -->
+            <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; border-radius: 21px; padding: 40px;">
+                <div class="character-display">{{ character.kana }}</div>
+                <div class="romaji-display">{{ character.romaji }}</div>
             </div>
         </div>
+
+        <!-- Right Panel - Drawing Canvas -->
         <div class="w-50 bg-body-tertiary py-3 px-3 py-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
-            <div class="my-3 p-3"><h2 class="display-5">Your Turn</h2>
-                <p class="lead">Now draw this character correctly to progress.</p></div>
-            <canvas id="drawCanvas" width="500" height="300"></canvas>
+            <div class="my-3 p-3">
+                <h2 class="display-5">Your Turn</h2>
+                <p class="lead">Draw the character above.</p>
+            </div>
+
+            <canvas id="drawCanvas" width="500" height="400"></canvas>
+
             <div class="btn-row">
                 <button id="clearBtn" class="btn btn-clear">Clear</button>
                 <button id="undoBtn" class="btn btn-undo" disabled>Undo</button>
                 <button id="submitBtn" class="btn btn-submit">Submit</button>
+                <button id="skipBtn" class="btn btn-secondary">Skip</button>
             </div>
-            <div id="resultBox" class="prediction-box" style="display: none">
-                <p><strong>Prediction:</strong> <span id="predictedKanji">...</span></p>
-                <p><strong>Confidence:</strong> <span id="confidence">...</span></p>
-                <p id="debugInfo" class="debug-info"></p>
+
+            <!-- Result Box -->
+            <div id="resultBox" class="prediction-box" style="display: none; margin-top: 20px; padding: 20px; border-radius: 10px;">
+                <h4 id="resultMessage">...</h4>
+                <p><strong>You drew:</strong> <span id="recognizedText" style="font-size: 24px;">...</span></p>
+                <p><strong>Expected:</strong> <span id="expectedChar" style="font-size: 24px;">{{ character.kana }}</span></p>
+                <div id="nextActions" style="margin-top: 15px; display: none;">
+                    <button id="nextBtn" class="btn btn-success">Next Character →</button>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block scripts %}
-    <script src="/js/draw.js"></script>
+    <script>
+    const canvas = document.getElementById("drawCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Increase canvas resolution for better quality
+    const scale = 2;
+    canvas.width = 500 * scale;
+    canvas.height = 400 * scale;
+    canvas.style.width = '500px';
+    canvas.style.height = '400px';
+    ctx.scale(scale, scale);
+
+    // Initialize canvas with white background
+    function initializeCanvas() {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 25; // Thicker strokes for clearer recognition
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "#000000";
+    }
+
+    initializeCanvas();
+
+    let drawing = false;
+    let lastX = 0;
+    let lastY = 0;
+    const undoStack = [];
+
+    function getCoordinates(e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = 500 / rect.width;
+        const scaleY = 400 / rect.height;
+
+        if (e.touches) {
+            return {
+                x: (e.touches[0].clientX - rect.left) * scaleX,
+                y: (e.touches[0].clientY - rect.top) * scaleY
+            };
+        } else {
+            return {
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY
+            };
+        }
+    }
+
+    function startDrawing(e) {
+        e.preventDefault();
+        undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        document.getElementById("undoBtn").disabled = false;
+
+        const coords = getCoordinates(e);
+        lastX = coords.x;
+        lastY = coords.y;
+        drawing = true;
+
+        // Draw a dot at the start point
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, ctx.lineWidth / 2, 0, Math.PI * 2);
+        ctx.fillStyle = "#000000";
+        ctx.fill();
+    }
+
+    function draw(e) {
+        e.preventDefault();
+        if (!drawing) return;
+
+        const coords = getCoordinates(e);
+
+        // Smooth line drawing
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
+
+        lastX = coords.x;
+        lastY = coords.y;
+    }
+
+    function stopDrawing(e) {
+        e.preventDefault();
+        drawing = false;
+    }
+
+    function undo() {
+        if (undoStack.length === 0) return;
+        const imageData = undoStack.pop();
+        ctx.putImageData(imageData, 0, 0);
+        if (undoStack.length === 0) {
+            document.getElementById("undoBtn").disabled = true;
+        }
+    }
+
+    // Event listeners
+    canvas.addEventListener("mousedown", startDrawing);
+    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("mouseup", stopDrawing);
+    canvas.addEventListener("mouseleave", stopDrawing);
+    canvas.addEventListener("touchstart", startDrawing);
+    canvas.addEventListener("touchmove", draw);
+    canvas.addEventListener("touchend", stopDrawing);
+    canvas.addEventListener("touchcancel", stopDrawing);
+
+    // Clear button
+    document.getElementById("clearBtn").addEventListener("click", () => {
+        initializeCanvas();
+        undoStack.length = 0;
+        document.getElementById("undoBtn").disabled = true;
+        document.getElementById("resultBox").style.display = "none";
+    });
+
+    // Undo button
+    document.getElementById("undoBtn").addEventListener("click", undo);
+
+    // Submit button
+    document.getElementById("submitBtn").addEventListener("click", async () => {
+        const resultBox = document.getElementById("resultBox");
+        const resultMessage = document.getElementById("resultMessage");
+        const recognizedText = document.getElementById("recognizedText");
+        const nextActions = document.getElementById("nextActions");
+
+        // Check if canvas is empty
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const pixels = imageData.data;
+        let isEmpty = true;
+        let pixelCount = 0;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+            if (pixels[i] < 250 || pixels[i + 1] < 250 || pixels[i + 2] < 250) {
+                pixelCount++;
+                isEmpty = false;
+            }
+        }
+
+        if (isEmpty) {
+            alert("Please draw something first!");
+            return;
+        }
+
+        if (pixelCount < 100) {
+            alert("Your drawing is too small. Please draw larger and clearer!");
+            return;
+        }
+
+        console.log(`Drawing has ${pixelCount} pixels`);
+
+        // Show loading state
+        resultBox.style.display = "block";
+        resultBox.className = "prediction-box";
+        resultMessage.textContent = "🔍 Analyzing your drawing...";
+        recognizedText.textContent = "...";
+        nextActions.style.display = "none";
+
+        try {
+            // Create a temporary canvas at original size for export
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = 500;
+            exportCanvas.height = 400;
+            const exportCtx = exportCanvas.getContext('2d');
+
+            // Draw the scaled content to export canvas
+            exportCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 500, 400);
+
+            // Convert to PNG
+            const dataURL = exportCanvas.toDataURL("image/png", 1.0);
+
+            console.log("📤 Sending image to server...");
+
+            const res = await fetch("/dashboard/kanji/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ image: dataURL }),
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Server error: ${res.status}`);
+            }
+
+            const data = await res.json();
+
+            if (!data.success) throw new Error(data.error || "Prediction failed");
+
+            const prediction = data.prediction;
+
+            console.log("📥 Prediction result:", prediction);
+
+            if (!prediction.recognized_text || prediction.recognized_text === "") {
+                recognizedText.textContent = "(nothing)";
+                resultMessage.textContent = "❌ Could not recognize any character. Try drawing more clearly!";
+                resultBox.classList.add("result-incorrect");
+            } else {
+                recognizedText.textContent = prediction.recognized_text;
+                resultMessage.textContent = prediction.message;
+
+                if (prediction.is_correct) {
+                    resultBox.classList.add("result-correct");
+                    nextActions.style.display = "block";
+                } else {
+                    resultBox.classList.add("result-incorrect");
+                }
+            }
+
+        } catch (err) {
+            resultMessage.textContent = "❌ Error: " + err.message;
+            recognizedText.textContent = "N/A";
+            resultBox.classList.add("result-incorrect");
+            console.error("❌ Submission error:", err);
+        }
+    });
+
+    // Skip button
+    document.getElementById("skipBtn").addEventListener("click", async () => {
+        if (!confirm("Skip this character? It will be marked as not learned.")) return;
+
+        try {
+            const res = await fetch("/dashboard/kanji/skip", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            });
+
+            const data = await res.json();
+            if (data.success && data.redirect) {
+                window.location.href = data.redirect;
+            }
+        } catch (err) {
+            console.error("Skip error:", err);
+        }
+    });
+
+    // Next button
+    document.getElementById("nextBtn").addEventListener("click", () => {
+        window.location.reload();
+    });
+
+    canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    console.log("✅ High-resolution canvas initialized");
+    console.log("💡 TIP: Draw characters large and clear in the center of the canvas");
+    </script>
 {% endblock %}

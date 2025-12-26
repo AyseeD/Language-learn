@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-md-4">
+                <!-- Progress Bar -->
+                <div class="mb-3">
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: {{ progress }}%;"
+                             aria-valuenow="{{ progress }}"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            {{ "%.1f"|format(progress) }}%
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Character Card -->
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <!-- Large Kana Display -->
+                        <div class="mb-4" style="font-size: 120px; font-weight: bold; cursor: pointer;"
+                             onclick="playAudio()">
+                            {{ character.kana }}
+                        </div>
+
+                        <!-- Audio Button -->
+                        <button class="btn btn-outline-primary mb-3" onclick="playAudio()">
+                            <i class="bi bi-volume-up"></i> Play Audio
+                        </button>
+
+                        <!-- Hidden audio element -->
+                        <audio id="kanaAudio" preload="auto">
+                            <source src="{{ url_for('course.tts', course_name=course.name, character_id=character.id) }}" type="audio/mpeg">
+                        </audio>
+
+                        <!-- Romaji -->
+                        <h5 class="card-title mb-4">{{ character.romaji }}</h5>
+
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex gap-2" role="group">
+                            <form method="POST" action="{{ url_for('course.learn_previous', course_name=course.name) }}" class="w-50">
+                                <button type="submit" class="w-100 btn btn-secondary">Previous</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('course.learn_next', course_name=course.name) }}" class="w-50">
+                                <button type="submit" class="w-100 btn btn-primary">Next</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Info -->
+                <div class="mt-3 text-center text-muted">
+                    <small>Course: {{ course.name }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function playAudio() {
+            const audio = document.getElementById('kanaAudio');
+            audio.currentTime = 0; // Reset to start
+            audio.play();
+        }
+    </script>
+{% endblock %}
