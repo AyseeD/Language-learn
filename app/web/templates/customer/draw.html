@@ -1,82 +1,88 @@
 {% extends "layout.html" %}
 
 {% block head %}
-    <link rel="stylesheet" href="/css/draw.css"/>
-    <style>
-        .character-display {
-            color: #666;
-            font-size: 120px;
-            font-weight: bold;
-            margin: 30px 0;
-            font-family: 'Noto Sans JP', sans-serif;
-        }
-        .romaji-display {
-            font-size: 24px;
-            color: #666;
-            margin-top: 10px;
-        }
-        .result-correct {
-            background-color: #d4edda;
-            border: 2px solid #28a745;
-            color: #155724;
-        }
-        .result-incorrect {
-            background-color: #f8d7da;
-            border: 2px solid #dc3545;
-            color: #721c24;
-        }
-    </style>
+<link rel="stylesheet" href="/css/draw.css" />
+<style>
+    .character-display {
+        color: #666;
+        font-size: 120px;
+        font-weight: bold;
+        margin: 30px 0;
+        font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .romaji-display {
+        font-size: 24px;
+        color: #666;
+        margin-top: 10px;
+    }
+
+    .result-correct {
+        background-color: #d4edda;
+        border: 2px solid #28a745;
+        color: #155724;
+    }
+
+    .result-incorrect {
+        background-color: #f8d7da;
+        border: 2px solid #dc3545;
+        color: #721c24;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-    <div class="d-md-flex flex-md-equal w-100 position-relative" style="min-height: 95vh;">
-        <!-- Left Panel - Character Display -->
-        <div class="w-50 text-bg-dark pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
-            <a href="{{ url_for('customer.courses') }}" class="btn btn-danger text-white" style="width: 100px; position: absolute; top: 10px; left: 10px;">← Back</a>
+<div class="d-md-flex flex-md-equal w-100 position-relative" style="min-height: 95vh;">
+    <!-- Left Panel - Character Display -->
+    <div class="w-50 text-bg-dark pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
+        <a href="{{ url_for('customer.courses') }}" class="btn btn-danger text-white"
+            style="width: 100px; position: absolute; top: 10px; left: 10px;">← Back</a>
 
-            <div class="my-3 py-3">
-                <h2 class="display-5">{{ course.name }} Practice</h2>
-                <p class="lead">Draw this character correctly to progress.</p>
-            </div>
-
-            <!-- Character Display -->
-            <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; border-radius: 21px; padding: 40px;">
-                <div class="character-display">{{ character.kana }}</div>
-                <div class="romaji-display">{{ character.romaji }}</div>
-            </div>
+        <div class="my-3 py-3">
+            <h2 class="display-5">{{ course.name }} Practice</h2>
+            <p class="lead">Draw this character correctly to progress.</p>
         </div>
 
-        <!-- Right Panel - Drawing Canvas -->
-        <div class="w-50 bg-body-tertiary py-3 px-3 py-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
-            <div class="my-3 p-3">
-                <h2 class="display-5">Your Turn</h2>
-                <p class="lead">Draw the character above.</p>
-            </div>
+        <!-- Character Display -->
+        <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; border-radius: 21px; padding: 40px;">
+            <div class="character-display">{{ character.kana }}</div>
+            <div class="romaji-display">{{ character.romaji }}</div>
+        </div>
+    </div>
 
-            <canvas id="drawCanvas" width="500" height="400"></canvas>
+    <!-- Right Panel - Drawing Canvas -->
+    <div class="w-50 bg-body-tertiary py-3 px-3 py-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
+        <div class="my-3 p-3">
+            <h2 class="display-5">Your Turn</h2>
+            <p class="lead">Draw the character above.</p>
+        </div>
 
-            <div class="btn-row">
-                <button id="clearBtn" class="btn btn-clear">Clear</button>
-                <button id="undoBtn" class="btn btn-undo" disabled>Undo</button>
-                <button id="submitBtn" class="btn btn-submit">Submit</button>
-                <button id="skipBtn" class="btn btn-secondary">Skip</button>
-            </div>
+        <canvas id="drawCanvas" width="500" height="400"></canvas>
 
-            <!-- Result Box -->
-            <div id="resultBox" class="prediction-box" style="display: none; margin-top: 20px; padding: 20px; border-radius: 10px;">
-                <h4 id="resultMessage">...</h4>
-                <p><strong>You drew:</strong> <span id="recognizedText" style="font-size: 24px;">...</span></p>
-                <p><strong>Expected:</strong> <span id="expectedChar" style="font-size: 24px;">{{ character.kana }}</span></p>
-                <div id="nextActions" style="margin-top: 15px; display: none;">
-                    <button id="nextBtn" class="btn btn-success">Next Character →</button>
-                </div>
+        <div class="btn-row">
+            <button id="clearBtn" class="btn btn-clear">Clear</button>
+            <button id="undoBtn" class="btn btn-undo" disabled>Undo</button>
+            <button id="submitBtn" class="btn btn-submit">Submit</button>
+            <button id="skipBtn" class="btn btn-secondary">Skip</button>
+        </div>
+
+        <!-- Result Box -->
+        <div id="resultBox" class="prediction-box"
+            style="display: none; margin-top: 20px; padding: 20px; border-radius: 10px;">
+            <h4 id="resultMessage">...</h4>
+            <p><strong>You drew:</strong> <span id="recognizedText" style="font-size: 24px;">...</span></p>
+            <p><strong>Expected:</strong> <span id="expectedChar" style="font-size: 24px;">{{ character.kana }}</span>
+            </p>
+            <div id="nextActions" style="margin-top: 15px; display: none;">
+                <button id="nextBtn" class="btn btn-success">Next Character →</button>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
-    <script>
+<script>
     const canvas = document.getElementById("drawCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -191,12 +197,13 @@
     // Undo button
     document.getElementById("undoBtn").addEventListener("click", undo);
 
-    // Submit button
+    // Update the submit button event listener
     document.getElementById("submitBtn").addEventListener("click", async () => {
         const resultBox = document.getElementById("resultBox");
         const resultMessage = document.getElementById("resultMessage");
         const recognizedText = document.getElementById("recognizedText");
         const nextActions = document.getElementById("nextActions");
+        const expectedChar = document.getElementById("expectedChar");
 
         // Check if canvas is empty
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -226,7 +233,7 @@
         // Show loading state
         resultBox.style.display = "block";
         resultBox.className = "prediction-box";
-        resultMessage.textContent = "🔍 Analyzing your drawing...";
+        resultMessage.textContent = "Analyzing your drawing...";
         recognizedText.textContent = "...";
         nextActions.style.display = "none";
 
@@ -243,78 +250,132 @@
             // Convert to PNG
             const dataURL = exportCanvas.toDataURL("image/png", 1.0);
 
-            console.log("📤 Sending image to server...");
+            console.log(" Sending image to server...");
 
-            const res = await fetch("/dashboard/kanji/predict", {
+            // Send to the correct endpoint - FIXED URL
+            const res = await fetch("/hiragana/predict", {  // Changed from /dashboard/kanji/predict
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ image: dataURL }),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    image: dataURL,
+                    target_char: expectedChar.textContent.trim()
+                }),
             });
 
             if (!res.ok) {
                 const errorText = await res.text();
-                throw new Error(`Server error: ${res.status}`);
+                console.error("Server error details:", errorText);
+                throw new Error(`Server error: ${res.status} - ${res.statusText}`);
             }
 
             const data = await res.json();
 
-            if (!data.success) throw new Error(data.error || "Prediction failed");
+            if (!data.success) {
+                throw new Error(data.error || "Prediction failed");
+            }
 
-            const prediction = data.prediction;
+            console.log("Prediction result:", data);
 
-            console.log("📥 Prediction result:", prediction);
-
-            if (!prediction.recognized_text || prediction.recognized_text === "") {
+            if (!data.recognized_text || data.recognized_text === "") {
                 recognizedText.textContent = "(nothing)";
-                resultMessage.textContent = "❌ Could not recognize any character. Try drawing more clearly!";
+                resultMessage.textContent = "Could not recognize any character. Try drawing more clearly!";
                 resultBox.classList.add("result-incorrect");
             } else {
-                recognizedText.textContent = prediction.recognized_text;
-                resultMessage.textContent = prediction.message;
+                recognizedText.textContent = data.recognized_text;
 
-                if (prediction.is_correct) {
+                // Add romaji if available
+                if (data.romaji && data.romaji !== data.recognized_text) {
+                    recognizedText.innerHTML = `${data.recognized_text} <span style="font-size: 16px; color: #666;">(${data.romaji})</span>`;
+                }
+
+                resultMessage.textContent = data.message;
+
+                if (data.is_correct) {
                     resultBox.classList.add("result-correct");
                     nextActions.style.display = "block";
+
+                    // Show confetti for correct answer
+                    if (typeof confetti === 'function' && data.confidence > 0.95) {
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                    }
                 } else {
                     resultBox.classList.add("result-incorrect");
+
+                    // Show top predictions if incorrect
+                    if (data.top_predictions && data.top_predictions.length > 1) {
+                        const topPredictions = data.top_predictions.slice(1, 3).map(p =>
+                            `${p.character} (${p.romaji || p.character})`
+                        ).join(', ');
+
+                        if (topPredictions) {
+                            resultMessage.textContent += ` Did you mean: ${topPredictions}?`;
+                        }
+                    }
+                }
+
+                // Show confidence
+                if (data.confidence) {
+                    const confidencePercent = Math.round(data.confidence * 100);
+                    resultMessage.innerHTML += `<br><small>Confidence: ${confidencePercent}%</small>`;
+
+                    // Add visual confidence bar
+                    const confidenceBar = document.createElement('div');
+                    confidenceBar.className = 'confidence-bar';
+                    confidenceBar.innerHTML = `
+                    <div class="confidence-fill" style="width: ${confidencePercent}%"></div>
+                `;
+                    resultMessage.appendChild(confidenceBar);
                 }
             }
 
         } catch (err) {
-            resultMessage.textContent = "❌ Error: " + err.message;
+            resultMessage.textContent = "Error: " + err.message;
             recognizedText.textContent = "N/A";
             resultBox.classList.add("result-incorrect");
-            console.error("❌ Submission error:", err);
+            console.error("Submission error:", err);
+
+            // Show more detailed error for debugging
+            if (err.message.includes("405")) {
+                resultMessage.textContent += " (Method not allowed - check endpoint configuration)";
+            }
         }
     });
 
-    // Skip button
+    // Update the skip button event listener
     document.getElementById("skipBtn").addEventListener("click", async () => {
         if (!confirm("Skip this character? It will be marked as not learned.")) return;
 
         try {
-            const res = await fetch("/dashboard/kanji/skip", {
+            const res = await fetch("/hiragana/skip", { 
                 method: "POST",
-                headers: { "Content-Type": "application/json" }
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
 
             const data = await res.json();
             if (data.success && data.redirect) {
                 window.location.href = data.redirect;
+            } else if (data.error) {
+                alert("Error: " + data.error);
             }
         } catch (err) {
             console.error("Skip error:", err);
+            alert("An error occurred while skipping the character.");
         }
     });
 
-    // Next button
+    // Update the next button event listener
     document.getElementById("nextBtn").addEventListener("click", () => {
+        // Reload the page to get a new character
         window.location.reload();
     });
-
     canvas.addEventListener("contextmenu", (e) => e.preventDefault());
-
-    console.log("✅ High-resolution canvas initialized");
-    console.log("💡 TIP: Draw characters large and clear in the center of the canvas");
-    </script>
+</script>
 {% endblock %}

@@ -1,0 +1,62 @@
+{
+  "0": {
+    "unicode": 12362,
+    "character": "お",
+    "name": "お",
+    "hex_code": "U+304A"
+  },
+  "1": {
+    "unicode": 12365,
+    "character": "き",
+    "name": "き",
+    "hex_code": "U+304D"
+  },
+  "2": {
+    "unicode": 12377,
+    "character": "す",
+    "name": "す",
+    "hex_code": "U+3059"
+  },
+  "3": {
+    "unicode": 12388,
+    "character": "つ",
+    "name": "つ",
+    "hex_code": "U+3064"
+  },
+  "4": {
+    "unicode": 12394,
+    "character": "な",
+    "name": "な",
+    "hex_code": "U+306A"
+  },
+  "5": {
+    "unicode": 12399,
+    "character": "は",
+    "name": "は",
+    "hex_code": "U+306F"
+  },
+  "6": {
+    "unicode": 12414,
+    "character": "ま",
+    "name": "ま",
+    "hex_code": "U+307E"
+  },
+  "7": {
+    "unicode": 12420,
+    "character": "や",
+    "name": "や",
+    "hex_code": "U+3084"
+  },
+  "8": {
+    "unicode": 12428,
+    "character": "れ",
+    "name": "れ",
+    "hex_code": "U+308C"
+  },
+  "9": {
+    "unicode": 12434,
+    "character": "を",
+    "name": "を",
+    "hex_code": "U+3092"
+  }
+}

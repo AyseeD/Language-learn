@@ -6,3 +6,11 @@ __pycache__/
 .venv/
 .env
 database.sqlite
+
+train_model.py
+train*
+logs
+best_model*
+
+.DS_Store
+app/.DS_Store

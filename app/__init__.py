@@ -78,11 +78,13 @@ def create_app():
     from app.routes.customer import customer as customer_blueprint
     from app.routes.course import course as course_blueprint
     from app.routes.admin import admin as admin_blueprint
+    from app.routes.hiragana import hiragana_bp  # Import the hiragana blueprint
 
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(customer_blueprint, url_prefix='/dashboard')
-    app.register_blueprint(course_blueprint, url_prefix='/dashboard')
+    app.register_blueprint(course_blueprint, url_prefix='/course')  # Note: changed from /dashboard to /course
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
+    app.register_blueprint(hiragana_bp)  # Register the hiragana blueprint
 
     # Index page
     @app.route('/')
