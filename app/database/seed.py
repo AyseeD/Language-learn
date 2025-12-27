@@ -6,6 +6,21 @@ from app import get_session
 from app.database.models import Base, Role, User, Course, Character, Pricing
 
 
+def initialize_database():
+    # Create all tables if they don't exist
+    print("[INFO] Initializing database...")
+    try:
+        from app import engine
+        Base.metadata.create_all(bind=engine)
+        print("  ✓ Database tables created/verified")
+        return True
+    except Exception as e:
+        print(f"  ✗ Failed to initialize database: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+
 def load_characters_from_csv(csv_path='kana.csv'):
     # Load characters from CSV file and organize by course type
 
@@ -292,23 +307,28 @@ def seed_database():
     print("DATABASE SEEDING")
     print("=" * 60 + "\n")
 
-    with get_session() as db:
-        try:
+    # Initialize database first
+    if not initialize_database():
+        print("\n❌ DATABASE INITIALIZATION FAILED")
+        print("Cannot proceed with seeding.")
+        return
+
+    try:
+        with get_session() as db:
             # Seed in order (respecting foreign keys)
             seed_roles(db)
             seed_courses_and_characters(db)
             seed_admin_user(db)
-            seed_demo_user(db)  # Added demo user seeding
+            seed_demo_user(db)
 
             print("\n" + "=" * 60)
             print("✅ DATABASE SEEDING COMPLETED SUCCESSFULLY")
             print("=" * 60 + "\n")
 
-        except Exception as e:
-            print(f"\n❌ ERROR during seeding: {e}")
-            import traceback
-            traceback.print_exc()
-            db.rollback()
+    except Exception as e:
+        print(f"\n❌ ERROR during seeding: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 def clear_database():
@@ -323,8 +343,8 @@ def clear_database():
         print("Aborted.")
         return
 
-    with get_session() as db:
-        try:
+    try:
+        with get_session() as db:
             # Delete in reverse order of foreign key dependencies
             print("[INFO] Clearing Progress...")
             from app.database.models import Progress
@@ -359,17 +379,17 @@ def clear_database():
             print("✅ DATABASE CLEARED SUCCESSFULLY")
             print("=" * 60 + "\n")
 
-        except Exception as e:
-            print(f"\n❌ ERROR during clearing: {e}")
-            import traceback
-            traceback.print_exc()
-            db.rollback()
+    except Exception as e:
+        print(f"\n❌ ERROR during clearing: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 if __name__ == '__main__':
     # For testing this script directly
-    print("Testing CSV loading...")
-    chars = load_characters_from_csv('kana.csv')
-    print(f"\nLoaded characters:")
-    for course, data in chars.items():
-        print(f"{course}: {len(data)} characters")
+    import sys
+
+    if len(sys.argv) > 1 and sys.argv[1] == 'clear':
+        clear_database()
+    else:
+        seed_database()

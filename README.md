@@ -60,10 +60,10 @@ course enrollment, and progress tracking.
 
 ## Database Setup
 
-### Clear the database
+### Create the database
 
 ```bash
-python run.py --clear
+python run.py --create
 ```
 
 ### Seed the database with sample data
@@ -72,10 +72,10 @@ python run.py --clear
 python run.py --seed
 ```
 
-### Clear and seed in one command
+### Create and seed in one command
 
 ```bash
-python run.py --clear && python run.py --seed
+python run.py --create ; python run.py --seed
 ```
 
 **Default seeded users:**
