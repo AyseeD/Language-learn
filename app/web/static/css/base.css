@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    background: #0e0e0e;
+    font-family: sans-serif;
+    color: white;
+}
+
+.flash {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    background-color: white;
+    color: black;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+}

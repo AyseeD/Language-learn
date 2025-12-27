@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <!-- Hero -->
+    <div class="px-4 pt-5 my-5 text-center border-bottom">
+        <h1 class="display-4 fw-bold">Learn Japanese Characters with Practice</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">Learn Japanese characters easily with interactive lessons for Hiragana, Katakana, and
+                Kanji. Whether you’re a beginner or looking to improve, our practice tools help you build confidence and
+                mastery at your own pace. Start your Japanese learning journey today!.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+                <button type="button" class="btn btn-danger btn-lg px-4 me-sm-3">
+                    <a href="/auth/register" class="text-decoration-none text-white">Sign Up Now!</a>
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-lg px-4">
+                    <a href="/#courses" class="text-decoration-none text-dark">Courses</a>
+                </button>
+            </div>
+        </div>
+        <div class="overflow-hidden" style="max-height: 50vh;">
+            <div class="container px-5">
+                <img src="/img/temple.svg" class="img-fluid" alt="Example image"
+                     width="700" height="500" loading="lazy">
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div id="features" class="container px-4 py-5 border-bottom">
+        <h2 class="pb-2 fs-1">Features</h2>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="col d-flex align-items-start">
+                <div class="icon-square text-dark flex-shrink-0 me-3">
+                    <i class="bi bi-wallet2" style="font-size: 2rem;"></i>
+                </div>
+                <div>
+                    <h2>Anki Style Cards</h2>
+                    <p>Master kana efficiently with Anki-style flashcards that use spaced repetition. Review characters
+                        at optimal intervals to boost retention and strengthen memory over time.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div class="icon-square text-dark flex-shrink-0 me-3">
+                    <i class="bi bi-easel2" style="font-size: 2rem;"></i>
+                </div>
+                <div>
+                    <h2>Drawing Practice</h2>
+                    <p>Hone your kana writing skills directly on the page with our interactive drawing practice tool.
+                        Use our simple canvas to trace, draw, and perfect each character in real-time.</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div class="icon-square text-dark flex-shrink-0 me-3">
+                    <i class="bi bi-cpu" style="font-size: 2rem;"></i>
+                </div>
+                <div>
+                    <h2>Assisted by AI</h2>
+                    <p>Enhance your learning experience with AI-powered assistance. Our system provides real-time
+                        feedback, helping you refine your kana skills and track your progress.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses -->
+    <div id="courses" class="container px-4 py-5">
+        <h2 class="pb-2 fs-1">Courses</h2>
+        <div class="container row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/hiragana.svg" class="card-img-top" alt="Hiragana">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Hiragana</h5>
+                        <p class="card-text">Hiragana is the foundation of the Japanese writing system, used for native
+                            words, grammar, and verb endings. It's essential for beginners to learn first.</p>
+                        <p class="text-success">Price: {{ hiragana_price }}$</p>
+                        <a href="/auth/register" class="w-100 btn btn-danger">Sign Up Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/katakana.svg" class="card-img-top" alt="Katakana">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Katakana</h5>
+                        <p class="card-text">Katakana is primarily used for foreign loanwords, names, and onomatopoeia.
+                            It's the second script you'll need to master after Hiragana.</p>
+                        <p class="text-danger">Price: {{ katakana_price }}$</p>
+                        <a href="/#courses" class="w-100 btn btn-secondary">Coming Soon</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/kanji.svg" class="card-img-top" alt="Kanji">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Kanji</h5>
+                        <p class="card-text">Kanji are characters borrowed from Chinese, representing entire words or
+                            concepts. They're more complex but crucial for reading and writing in Japanese.
+                        </p>
+                        <p class="text-danger">Price: {{ kanji_price }}$</p>
+                        <a href="/#courses" class="w-100 btn btn-secondary">Coming Soon</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div id="contact" class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="row align-items-center g-lg-5 py-5">
+            <div class="col-lg-7 text-center text-lg-start">
+                <h1 class="display-4 fw-bold lh-1 mb-3">Contact Us</h1>
+                <p class="col-lg-10 fs-4">Have questions or feedback? We'd love to hear from you! Reach out to our team,
+                    and we'll get back to you as soon as possible.</p>
+                <ul class="list-unstyled">
+                    <li>
+                        <button class="btn btn-danger">
+                            <a class="text-decoration-none text-light" href="tel:+90 312 444 22 28">Call Us!</a>
+                        </button>
+                        <button class="btn btn-danger">
+                            <a class="text-decoration-none text-light" href="mailto:info@ankarabilim.edu.tr">Mail Us!</a>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10 mx-auto col-lg-5">
+                <div class="p-4 border rounded-3 bg-light">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3059.784467807206!2d32.84311377514889!3d39.9238392854922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d3499c9fb54279%3A0x8fe2231aa94d6a16!2sAnkara%20Bilim%20%C3%9Cniversitesi%20Maltepe%20Kamp%C3%BCs%C3%BC!5e0!3m2!1str!2str!4v1764866723097!5m2!1str!2str"
+                            width="440" height="600" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/js/index.js"></script>
+{% endblock %}

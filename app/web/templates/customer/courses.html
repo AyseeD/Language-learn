@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <!-- Courses -->
+    <div id="courses" class="container px-4 py-5">
+        <h2 class="pb-2 fs-1">Choose A Courses To Study</h2>
+        <div class="container row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/hiragana.svg" class="card-img-top" alt="Hiragana">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Hiragana</h5>
+                        <p class="card-text">Hiragana is the foundation of the Japanese writing system, used for native
+                            words, grammar, and verb endings. It's essential for beginners to learn first.</p>
+                        <div class="d-flex btn-row gap-2" role="group">
+                            <a href="{{ url_for("course.learn", course_name="Hiragana") }}"
+                               class="w-50 btn btn-danger">Learn</a>
+                            <a href="{{ url_for("course.draw", course_name="Hiragana") }}"
+                               class="w-50 btn btn-danger">Practice</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/katakana.svg" class="card-img-top" alt="Katakana">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Katakana</h5>
+                        <p class="card-text">Katakana is primarily used for foreign loanwords, names, and onomatopoeia.
+                            It's the second script you'll need to master after Hiragana.</p>
+                        <div class="d-flex btn-row gap-2" role="group">
+                            <a href="{{ url_for("course.learn", course_name="Katakana") }}"
+                               class="w-50 btn btn-danger">Learn</a>
+                            <a href="#" class="w-50 btn btn-secondary">Coming Soon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/kanji.svg" class="card-img-top" alt="Kanji">
+                    <div class="card-body">
+                        <h5 class="card-title">Learn Kanji</h5>
+                        <p class="card-text">Kanji are characters borrowed from Chinese, representing entire words or
+                            concepts. They're more complex but crucial for reading and writing in Japanese.
+                        </p>
+                        <div class="d-flex btn-row gap-2" role="group">
+                            <a href="{{ url_for("course.learn", course_name="Kanji") }}"
+                               class="w-50 btn btn-danger">Learn</a>
+                            <a href="#" class="w-50 btn btn-secondary">Coming Soon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

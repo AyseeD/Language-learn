@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="text-center">
+        <div class="form-signin mx-auto" style="max-width: 400px; height: 75vh; top: 50%; transform: translateY(25%);">
+            <form action="/auth/login" method="POST">
+                <img class="mb-4" src="/img/temple.svg" alt="" width="72" height="57">
+
+                <h1 class="h3 mb-3 fw-normal">Please Log In</h1>
+
+                <div class="form-floating mb-3">
+                    {{ form.username(size=20, class_="form-control", placeholder="") }}
+                    {{ form.username.label(class_="form-label") }}
+                </div>
+
+                <div class="form-floating mb-3">
+                    {{ form.password(size=20, class_="form-control", placeholder="") }}
+                    {{ form.password.label(class_="form-label") }}
+                </div>
+
+                <div class="form-check form-switch mb-3 text-start">
+                    <label class="form-check-label">
+                        {{ form.remember_me(size=20, class_="form-check-input", role="switch") }} Remember Me
+                    </label>
+                </div>
+
+                {{ form.csrf_token }}
+
+                {{ form.submit(class_="btn btn-danger w-100") }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

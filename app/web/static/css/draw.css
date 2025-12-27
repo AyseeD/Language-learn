@@ -1,0 +1,87 @@
+/* CANVAS STYLE */
+#drawCanvas {
+    width: 100%;
+    height: auto;
+    border: 2px solid #b42f2f;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+/* BUTTON ROW */
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* BUTTON BASE */
+.btn {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+}
+
+/* CLEAR BUTTON */
+.btn-clear {
+    background: #ffe5e5;
+    color: #c23c3c;
+}
+.btn-clear:hover {
+    background: #ffd2d2;
+    transform: translateY(-2px);
+}
+
+/* UNDO BUTTON */
+.btn-undo {
+    background: #151515;
+    color: #ffffff;
+}
+.btn-undo:hover {
+    background-color: #ffffff;
+    color:#151515;
+    border: 1px solid #151515;
+    transform: translateY(-2px);
+}
+
+/* SUBMIT BUTTON */
+.btn-submit {
+    background: linear-gradient(135deg, #e63946, #ff7b6b);
+    color: white;
+    box-shadow: 0 4px 14px rgba(255,80,80,0.35);
+}
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,80,80,0.45);
+}
+
+/* PREDICTION BOX */
+.prediction-box {
+    background: #fff8f6;
+    border-left: 4px solid #ff6a5a;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.debug-info {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #777;
+    font-style: italic;
+}
+
+
+.prediction-box {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

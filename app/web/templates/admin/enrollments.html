@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Enrollment Management</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Enrollments</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Enrollments</h5>
+                        <h2>{{ enrollments|length }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Courses</h5>
+                        <h2>{{ enrollment_by_course|length }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enrollments by Course -->
+        {% for course_name, course_enrollments in enrollment_by_course.items() %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0">{{ course_name }}</h5>
+                    <small class="text-muted">{{ course_enrollments|length }} enrollments</small>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Enrollment ID</th>
+                                <th>User</th>
+                                <th>User ID</th>
+                                <th>Transaction ID</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for enrollment in course_enrollments %}
+                                <tr>
+                                    <td>{{ enrollment.id }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin.user_detail', user_id=enrollment.user_id) }}">
+                                            {{ enrollment.user_id }}
+                                        </a>
+                                    </td>
+                                    <td>{{ enrollment.user_id }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin.transaction_detail', transaction_id=enrollment.transaction_id) }}">
+                                            #{{ enrollment.transaction_id }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('admin.user_detail', user_id=enrollment.user_id) }}"
+                                           class="btn btn-sm btn-outline-primary">View User</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if not enrollments %}
+            <div class="alert alert-info">
+                No enrollments found.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

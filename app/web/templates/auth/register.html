@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="text-center">
+        <div class="form-signin mx-auto" style="max-width: 400px; height: 75vh; top: 50%; transform: translateY(25%);">
+            <form action="/auth/login" method="POST">
+                <img class="mb-4" src="/img/temple.svg" alt="" width="72" height="57">
+
+                <h1 class="h3 mb-3 fw-normal">Register</h1>
+
+                {{ form.hidden_tag() }}
+
+                <div class="form-floating mb-3">
+                    {{ form.name(size=20, class_="form-control", placeholder="") }}
+                    {{ form.name.label(class_="form-label") }}
+                </div>
+
+                <div class="form-floating mb-3">
+                    {{ form.username(size=20, class_="form-control", placeholder="") }}
+                    {{ form.username.label(class_="form-label") }}
+                </div>
+
+                <div class="form-floating mb-3">
+                    {{ form.password(size=20, class_="form-control", placeholder="") }}
+                    {{ form.password.label(class_="form-label") }}
+                </div>
+
+                <div class="form-floating mb-3">
+                    {{ form.confirmation(size=20, class_="form-control", placeholder="") }}
+                    {{ form.confirmation.label(class_="form-label") }}
+                </div>
+
+                {{ form.csrf_token }}
+
+                {{ form.submit(class_="btn btn-danger w-100") }}
+
+                <div class="flashes">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class=flashes>
+                                {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
