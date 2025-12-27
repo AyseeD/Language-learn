@@ -80,9 +80,8 @@ python run.py --create ; python run.py --seed
 
 **Default seeded users:**
 
-- **Admin**: username: `admin`, password: `password`
+- **Admin**: username: `admin`, password: `password123`
 - **Student 1**: username: `johndoe`, password: `password`
-- **Student 2**: username: `janesmith`, password: `password_1234`
 
 ## Running the Application
 
