@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Course Pricing Management</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Pricing</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Course Prices</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Course ID</th>
+                            <th>Course Name</th>
+                            <th>Current Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in pricing_data %}
+                            <tr>
+                                <td>{{ item.course.id }}</td>
+                                <td>{{ item.course.name }}</td>
+                                <td>
+                                    {% if item.pricing %}
+                                        <strong class="text-success">${{ item.pricing.price }}</strong>
+                                    {% else %}
+                                        <span class="text-muted">Not Set</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if item.pricing %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">No Pricing</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin.edit_pricing', course_id=item.course.id) }}"
+                                       class="btn btn-sm btn-primary">
+                                        {% if item.pricing %}Edit{% else %}Set{% endif %} Price
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>User Progress Tracking</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Progress</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">All User Progress</h5>
+            </div>
+            <div class="card-body">
+                {% if progress_stats %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Course</th>
+                                <th>Progress</th>
+                                <th>Characters Learned</th>
+                                <th>Completion %</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for stat in progress_stats %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url_for('admin.user_detail', user_id=stat.user.id) }}">
+                                            {{ stat.user.name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ stat.course.name }}</td>
+                                    <td>
+                                        <div class="progress" style="width: 150px; height: 25px;">
+                                            <div class="progress-bar
+                                        {% if stat.percentage == 100 %}bg-success
+                                        {% elif stat.percentage >= 75 %}bg-info
+                                        {% elif stat.percentage >= 50 %}bg-primary
+                                        {% elif stat.percentage >= 25 %}bg-warning
+                                        {% else %}bg-danger{% endif %}"
+                                                 role="progressbar"
+                                                 style="width: {{ stat.percentage }}%;">
+                                                {{ "%.0f"|format(stat.percentage) }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ stat.learned }} / {{ stat.total }}</td>
+                                    <td>
+                                        {% if stat.percentage == 100 %}
+                                            <span class="badge bg-success">Complete</span>
+                                        {% elif stat.percentage >= 75 %}
+                                            <span class="badge bg-info">Advanced</span>
+                                        {% elif stat.percentage >= 50 %}
+                                            <span class="badge bg-primary">Intermediate</span>
+                                        {% elif stat.percentage >= 25 %}
+                                            <span class="badge bg-warning">Beginner</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Just Started</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('admin.user_detail', user_id=stat.user.id) }}"
+                                           class="btn btn-sm btn-outline-primary">View Details</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No progress data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

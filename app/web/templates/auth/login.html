@@ -27,18 +27,6 @@
                 {{ form.csrf_token }}
 
                 {{ form.submit(class_="btn btn-danger w-100") }}
-
-                <div class="flashes">
-                    {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            <ul class=flashes>
-                                {% for message in messages %}
-                                    <li>{{ message }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    {% endwith %}
-                </div>
             </form>
         </div>
     </div>

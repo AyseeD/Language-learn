@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Edit Course Pricing</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.pricing') }}">Pricing</a></li>
+                        <li class="breadcrumb-item active">{{ course.name }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Set Price for {{ course.name }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price (USD)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" id="price" name="price"
+                                           value="{{ pricing.price if pricing else '' }}"
+                                           min="0" step="1" required>
+                                </div>
+                                <div class="form-text">Enter the price in US dollars.</div>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <strong>Current Status:</strong>
+                                {% if pricing %}
+                                    Price is currently set to <strong>${{ pricing.price }}</strong>
+                                {% else %}
+                                    No price has been set for this course yet.
+                                {% endif %}
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    {% if pricing %}Update Price{% else %}Set Price{% endif %}
+                                </button>
+                                <a href="{{ url_for('admin.pricing') }}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

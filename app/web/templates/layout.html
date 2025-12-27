@@ -31,26 +31,34 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto d-flex flex-row gap-4">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/#features">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/#courses">Courses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/#contact">Contact Us</a>
-                    </li>
-                </ul>
+                {% if not current_user.is_authenticated %}
+                    <ul class="navbar-nav mx-auto d-flex flex-row gap-4">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#courses">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#contact">Contact Us</a>
+                        </li>
+                    </ul>
+                {% else %}
+                    <div class="mx-auto"></div>
+                {% endif %}
 
                 <div class="d-flex gap-2 align-items-center">
                     {% if current_user.is_authenticated %}
                         <span>Welcome back, {{ current_user['name'] }}</span>
                         <button type="button" class="btn btn-dark">
-                            <a href="{{ url_for('customer.courses') }}" class="text-decoration-none text-white">Dashboard</a>
+                            {% if current_user.role_code == 'ADMIN' %}
+                                <a href="{{ url_for('admin.dashboard') }}" class="text-decoration-none text-white">Dashboard</a>
+                            {% else %}
+                                <a href="{{ url_for('customer.courses') }}" class="text-decoration-none text-white">Dashboard</a>
+                            {% endif %}
                         </button>
                         <button type="button" class="btn btn-dark">
                             <a href="{{ url_for('auth.logout') }}" class="text-decoration-none text-white">Log Out</a>
@@ -69,14 +77,24 @@
         </div>
     </nav>
 
-    <section class="content">
+    <section class="content" style="min-height: 79vh;">
         {% block content %}{% endblock %}
-        {% for message in get_flashed_messages() %}
-            <div class="flash">{{ message }}</div>
-        {% endfor %}
     </section>
 
-    <footer class="py-3 my-4">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+        {% for message in get_flashed_messages() %}
+            <div class="toast align-items-center border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <footer class="d-flex flex-column justify-content-center">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
             <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
             <li class="nav-item"><a href="/#features" class="nav-link px-2 text-muted">Features</a></li>
@@ -92,6 +110,19 @@
                 integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
                 crossorigin="anonymous"
         ></script>
+        <script>
+            // Auto-initialize and show all toasts
+            document.addEventListener('DOMContentLoaded', function() {
+                var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+                toastElList.forEach(function(toastEl) {
+                    var toast = new bootstrap.Toast(toastEl, {
+                        autohide: true,
+                        delay: 4000
+                    });
+                    toast.show();
+                });
+            });
+        </script>
     {% endblock %}
     </body>
 {% endblock %}

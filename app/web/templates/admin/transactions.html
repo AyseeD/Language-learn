@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Transaction Management</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Transactions</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Revenue Summary -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Revenue</h5>
+                        <h2>${{ total_revenue }}</h2>
+                        <p class="mb-0">From {{ transactions|length }} transactions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">All Transactions</h5>
+                <span class="badge bg-primary">{{ transactions|length }} Transactions</span>
+            </div>
+            <div class="card-body">
+                {% if transactions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Course</th>
+                                <th>Amount</th>
+                                <th>Card Number</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ transaction.id }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin.user_detail', user_id=transaction.user.id) }}">
+                                            {{ transaction.user.name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ transaction.course.name }}</td>
+                                    <td><strong class="text-success">${{ transaction.price }}</strong></td>
+                                    <td>****-****-****-{{ transaction.card_number[-4:] }}</td>
+                                    <td>{{ transaction.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin.transaction_detail', transaction_id=transaction.id) }}"
+                                           class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No transactions found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

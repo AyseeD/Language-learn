@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Transaction Details</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin.transactions') }}">Transactions</a></li>
+                        <li class="breadcrumb-item active">Transaction #{{ transaction.id }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Transaction #{{ transaction.id }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Customer Information</h6>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th>Name:</th>
+                                        <td>
+                                            <a href="{{ url_for('admin.user_detail', user_id=transaction.user.id) }}">
+                                                {{ transaction.user.name }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Username:</th>
+                                        <td>{{ transaction.user.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>User ID:</th>
+                                        <td>{{ transaction.user.id }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Purchase Information</h6>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th>Course:</th>
+                                        <td>{{ transaction.course.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Amount:</th>
+                                        <td><strong class="text-success">${{ transaction.price }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Date:</th>
+                                        <td>{{ transaction.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="text-muted">Payment Information</h6>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th>Card Number:</th>
+                                        <td>****-****-****-{{ transaction.card_number[-4:] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Transaction ID:</th>
+                                        <td>{{ transaction.id }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex gap-2">
+                            <a href="{{ url_for('admin.transactions') }}" class="btn btn-secondary">Back to
+                                Transactions</a>
+                            <a href="{{ url_for('admin.user_detail', user_id=transaction.user.id) }}"
+                               class="btn btn-primary">View User Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

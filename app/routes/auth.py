@@ -12,7 +12,10 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        if current_user.role_code == 'ADMIN':
+            return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('customer.courses'))
+
     form = LoginForm()
     if form.validate_on_submit():
         with get_session() as session:
@@ -22,7 +25,11 @@ def login():
                 flash('Invalid username or password')
                 return redirect(url_for('auth.login'))
             login_user(user, remember=form.remember_me.data)
+
+            if user.role_code == 'ADMIN':
+                return redirect(url_for('admin.dashboard'))
             return redirect(url_for('customer.courses'))
+
     return render_template('auth/login.html', title='Log In', form=form)
 
 

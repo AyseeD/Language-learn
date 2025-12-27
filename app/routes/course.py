@@ -12,12 +12,25 @@ from app import get_session
 course = Blueprint('course', __name__)
 
 
-@login_required
 @course.route('/<course_name>/draw', methods=['GET'])
+@login_required
 def draw(course_name):
+    if hasattr(current_user, 'id'):
+        print(f"User ID: {current_user.id}")
+    else:
+        print("User has no ID attribute!")
+        flash('Authentication error. Please log in again.', 'error')
+        return redirect(url_for('auth.login'))
+
     with get_session() as db:
         # Check if user is enrolled in this course
-        course_id = db.query(Course).filter_by(name=course_name).scalar().id
+        course_obj = db.query(Course).filter_by(name=course_name).first()
+
+        if not course_obj:
+            flash('Course not found', 'error')
+            return redirect(url_for('customer.courses'))
+
+        course_id = course_obj.id
 
         enrollment = db.query(Enrollment).filter_by(
             user_id=current_user.id,
@@ -74,15 +87,15 @@ def draw(course_name):
         )
 
 
-@login_required
 @course.route('/<course_name>/learn', methods=['GET'])
+@login_required
 def learn(course_name):
     with get_session() as db:
         # Get course details
         course_obj = db.query(Course).filter_by(name=course_name).first()
         if not course_obj:
             flash("Course not found", "error")
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
 
         # Check if user is enrolled in this course
         enrollment = db.query(Enrollment).filter_by(
@@ -92,14 +105,14 @@ def learn(course_name):
 
         if not enrollment:
             flash("You are not enrolled in this course", "error")
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
 
         # Get all characters for this course
         all_characters = db.query(Character).filter_by(course_id=course_obj.id).all()
 
         if not all_characters:
             flash("No characters available for this course", "error")
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
 
         # Get user's progress
         learned_progress = db.query(Progress).filter_by(
@@ -139,7 +152,6 @@ def learn(course_name):
 
 @course.route('/<course_name>/tts/<int:character_id>', methods=['GET'])
 def tts(course_name, character_id):
-    """Generate TTS audio for a character"""
     with get_session() as db:
         # Get the character
         character = db.query(Character).filter_by(id=character_id).first()
@@ -166,8 +178,8 @@ def tts(course_name, character_id):
             return f"Error generating audio: {str(e)}", 500
 
 
-@login_required
 @course.route('/<course_name>/learn/next', methods=['POST'])
+@login_required
 def learn_next(course_name):
     with get_session() as db:
         # Get current character from session
@@ -197,7 +209,7 @@ def learn_next(course_name):
                 course_id=current_course_id,
                 character_id=current_character_id,
                 learned=True,
-                answered=False,
+                answered=True,
                 created_at=datetime.utcnow(),
                 updated_at=datetime.utcnow()
             )
@@ -209,22 +221,22 @@ def learn_next(course_name):
         return redirect(url_for('course.learn', course_name=course_name))
 
 
-@login_required
 @course.route('/<course_name>/learn/previous', methods=['POST'])
+@login_required
 def learn_previous(course_name):
     with get_session() as db:
         # Get course details
         course_obj = db.query(Course).filter_by(name=course_name).first()
         if not course_obj:
             flash("Course not found", "error")
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
 
         # Get all characters for this course
         all_characters = db.query(Character).filter_by(course_id=course_obj.id).all()
 
         if not all_characters:
             flash("No characters available", "error")
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
 
         # Get current character from session
         current_character_id = session.get('current_character_id')

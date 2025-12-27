@@ -53,6 +53,26 @@ class User(UserMixin, Base):
     transactions = relationship("Transaction", back_populates="user")
     progress = relationship("Progress", back_populates="user")
 
+    # Flask-Login integration
+    def get_id(self):
+        # Return the user ID as a string
+        return str(self.id)
+
+    @property
+    def is_active(self):
+        # Required for Flask-Login
+        return True
+
+    @property
+    def is_authenticated(self):
+        # Required for Flask-Login
+        return True
+
+    @property
+    def is_anonymous(self):
+        # Required for Flask-Login
+        return False
+
     def __repr__(self):
         return '<User %r>' % self.username
 

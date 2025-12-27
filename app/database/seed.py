@@ -7,7 +7,7 @@ from app.database.models import Base, Role, User, Course, Character, Pricing
 
 
 def load_characters_from_csv(csv_path='kana.csv'):
-    """Load characters from CSV file and organize by course type"""
+    # Load characters from CSV file and organize by course type
 
     # Get absolute path - this file is in app/database/seed.py
     base_dir = Path(__file__).resolve().parent  # app/database/
@@ -116,7 +116,7 @@ def load_characters_from_csv(csv_path='kana.csv'):
 
 
 def seed_roles(db: Session):
-    """Seed roles table"""
+    # Seed roles table
     print("[INFO] Seeding roles...")
 
     roles_data = [
@@ -138,7 +138,7 @@ def seed_roles(db: Session):
 
 
 def seed_courses_and_characters(db: Session):
-    """Seed courses and their characters from CSV"""
+    # Seed courses and their characters from CSV
     print("[INFO] Seeding courses and characters...")
 
     # Load characters from CSV
@@ -211,7 +211,7 @@ def seed_courses_and_characters(db: Session):
 
 
 def seed_admin_user(db: Session):
-    """Seed an admin user for testing"""
+    # Seed an admin user for testing
     print("[INFO] Seeding admin user...")
 
     admin = db.query(User).filter_by(username='admin').first()
@@ -231,7 +231,7 @@ def seed_admin_user(db: Session):
 
 
 def seed_demo_user(db: Session):
-    """Seed a demo user for testing and enroll in Hiragana course"""
+    # Seed a demo user for testing and enroll in Hiragana course
     print("[INFO] Seeding demo user...")
 
     demo_user = db.query(User).filter_by(username='johndoe').first()
@@ -287,7 +287,7 @@ def seed_demo_user(db: Session):
 
 
 def seed_database():
-    """Main seeding function"""
+    # Main seeding function
     print("\n" + "=" * 60)
     print("DATABASE SEEDING")
     print("=" * 60 + "\n")
@@ -312,7 +312,7 @@ def seed_database():
 
 
 def clear_database():
-    """Clear all data from database (use with caution!)"""
+    # Clear all data from database (use with caution!)
     print("\n" + "=" * 60)
     print("⚠️  DATABASE CLEARING")
     print("=" * 60 + "\n")

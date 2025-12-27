@@ -3,11 +3,10 @@ from contextlib import contextmanager
 from flask import Flask, render_template
 from flask_login import LoginManager
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from flask_cors import CORS
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 from app.config import Config
-from app.database.models import User
+from app.database.models import User, Course, Pricing
 
 # Global engine and session
 engine = None
@@ -39,6 +38,8 @@ def create_app():
     # Initialize Flask-Login
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
+    login_manager.login_message = 'Please log in to access this page.'
+    login_manager.login_message_category = 'info'
     login_manager.init_app(app)
 
     # Initialize SQLAlchemy engine
@@ -46,30 +47,58 @@ def create_app():
         Config.DATABASE_URL,
         echo=app.config.get('SQLALCHEMY_ECHO', False)
     )
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    # Use scoped_session for thread-safe sessions
+    SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
     @login_manager.user_loader
     def load_user(user_id):
-        session = SessionLocal()
+        if user_id is None or user_id == 'None':
+            return None
+
         try:
-            return session.query(User).get(int(user_id))
-        finally:
+            session = SessionLocal()
+            user = session.query(User).filter_by(id=int(user_id)).first()
+
+            if user:
+                return user
+
             session.close()
+            return None
+        except (ValueError, TypeError, Exception) as e:
+            print(f"Error loading user: {e}")
+            return None
+
+    # Teardown to remove session after each request
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        SessionLocal.remove()
 
     # Register blueprints
     from app.routes.auth import auth as auth_blueprint
     from app.routes.customer import customer as customer_blueprint
     from app.routes.course import course as course_blueprint
+    from app.routes.admin import admin as admin_blueprint
 
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(customer_blueprint, url_prefix='/dashboard')
     app.register_blueprint(course_blueprint, url_prefix='/dashboard')
+    app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
     # Index page
     @app.route('/')
     def index():
-        return render_template('index.html')
+        with get_session() as db:
+            # Get prices for each course
+            courses = db.query(Course).all()
 
-    CORS(app)
+            prices = {}
+            for course in courses:
+                pricing = db.query(Pricing).filter_by(course_id=course.id).first()
+                prices[course.name.lower()] = pricing.price if pricing else 'N/A'
+
+            return render_template('index.html',
+                                   hiragana_price=prices.get('hiragana', 'N/A'),
+                                   katakana_price=prices.get('katakana', 'N/A'),
+                                   kanji_price=prices.get('kanji', 'N/A'))
 
     return app
