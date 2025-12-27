@@ -12,10 +12,10 @@ def initialize_database():
     try:
         from app import engine
         Base.metadata.create_all(bind=engine)
-        print("  ✓ Database tables created/verified")
+        print("Database tables created/verified")
         return True
     except Exception as e:
-        print(f"  ✗ Failed to initialize database: {e}")
+        print(f"Failed to initialize database: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -309,7 +309,7 @@ def seed_database():
 
     # Initialize database first
     if not initialize_database():
-        print("\n❌ DATABASE INITIALIZATION FAILED")
+        print("\nDATABASE INITIALIZATION FAILED")
         print("Cannot proceed with seeding.")
         return
 
@@ -322,11 +322,11 @@ def seed_database():
             seed_demo_user(db)
 
             print("\n" + "=" * 60)
-            print("✅ DATABASE SEEDING COMPLETED SUCCESSFULLY")
+            print("DATABASE SEEDING COMPLETED SUCCESSFULLY")
             print("=" * 60 + "\n")
 
     except Exception as e:
-        print(f"\n❌ ERROR during seeding: {e}")
+        print(f"\nERROR during seeding: {e}")
         import traceback
         traceback.print_exc()
 
@@ -334,7 +334,7 @@ def seed_database():
 def clear_database():
     # Clear all data from database (use with caution!)
     print("\n" + "=" * 60)
-    print("⚠️  DATABASE CLEARING")
+    print("DATABASE CLEARING")
     print("=" * 60 + "\n")
 
     confirmation = input("Are you sure you want to clear the database? Type 'YES' to confirm: ")
@@ -376,11 +376,11 @@ def clear_database():
             db.commit()
 
             print("\n" + "=" * 60)
-            print("✅ DATABASE CLEARED SUCCESSFULLY")
+            print("DATABASE CLEARED SUCCESSFULLY")
             print("=" * 60 + "\n")
 
     except Exception as e:
-        print(f"\n❌ ERROR during clearing: {e}")
+        print(f"\nERROR during clearing: {e}")
         import traceback
         traceback.print_exc()
 

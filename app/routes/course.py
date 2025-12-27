@@ -101,7 +101,7 @@ def learn(course_name):
         course_obj = db.query(Course).filter_by(name=course_name).first()
         if not course_obj:
             flash("Course not found", "error")
-            return redirect(url_for('customer.courses'))  # Changed from main.index
+            return redirect(url_for('customer.courses'))
 
         # Check if user is enrolled in this course
         enrollment = db.query(Enrollment).filter_by(
@@ -111,7 +111,7 @@ def learn(course_name):
 
         if not enrollment:
             flash("You are not enrolled in this course", "error")
-            return redirect(url_for('customer.courses'))  # Changed from main.index
+            return redirect(url_for('customer.courses'))
 
         # Get all characters for this course
         all_characters = db.query(Character).filter_by(course_id=course_obj.id).all()
