@@ -1,0 +1,499 @@
+/* ==============================
+     Visual Overrides
+   ============================== */
+
+
+body {
+  background: #0e0e0e;
+  color: #fff;
+  font-family: sans-serif;
+  min-height: 100vh;
+}
+
+
+body:has(.px-4.pt-5.my-5.text-center.border-bottom) {
+  background:
+    radial-gradient(1200px 600px at 50% 0%,
+      rgba(255,255,255,0.10) 0%,
+      rgba(255,255,255,0.00) 45%),
+    linear-gradient(180deg, #b1141a 0%, #7f0f14 55%, #111 100%);
+}
+
+/* --------------------------------
+   HEADER / NAVBAR FIXES
+---------------------------------- */
+
+.navbar.navbar-expand.bg-transparent {
+  position: sticky;
+  top: 12px;
+  z-index: 1030;
+
+  width: calc(100% - 32px);
+  max-width: 1200px;
+  margin: 0 auto;
+
+  border-radius: 999px;
+  padding: 10px 14px;
+
+  background: rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.navbar.navbar-expand.bg-transparent .container-fluid {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.navbar.navbar-expand.bg-transparent .navbar-brand {
+  color: rgba(255,255,255,0.95) !important;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar.navbar-expand.bg-transparent .navbar-brand img {
+  filter: drop-shadow(0 8px 14px rgba(0,0,0,0.30));
+}
+
+/* nav links */
+.navbar.navbar-expand.bg-transparent .nav-link {
+  color: rgba(255,255,255,0.85) !important;
+  font-weight: 500;
+}
+.navbar.navbar-expand.bg-transparent .nav-link:hover {
+  color: rgba(255,255,255,1) !important;
+}
+
+/* right buttons */
+.navbar.navbar-expand.bg-transparent
+.d-flex.gap-2.align-items-center button.btn.btn-dark {
+  border-radius: 999px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.20);
+  background: rgba(255,255,255,0.08);
+}
+
+.navbar.navbar-expand.bg-transparent
+.d-flex.gap-2.align-items-center button.btn.btn-dark > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  text-decoration: none !important;
+  color: rgba(255,255,255,0.92) !important;
+  font-weight: 600;
+}
+
+/* Sign Up */
+.navbar.navbar-expand.bg-transparent
+.d-flex.gap-2.align-items-center button.btn.btn-dark:has(a[href*="register"]) {
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(255,255,255,0.75);
+}
+.navbar.navbar-expand.bg-transparent
+.d-flex.gap-2.align-items-center button.btn.btn-dark:has(a[href*="register"]) > a {
+  color: #111 !important;
+  font-weight: 700;
+}
+
+/* Hover */
+.navbar.navbar-expand.bg-transparent
+.d-flex.gap-2.align-items-center button.btn.btn-dark:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.30);
+}
+.navbar.navbar-expand.bg-transparent
+.d-flex.gap-2.align-items-center button.btn.btn-dark:has(a[href*="register"]):hover {
+  background: #fff;
+}
+
+/* --------------------------------
+   HERO PAGE FIXES
+---------------------------------- */
+
+.px-4.pt-5.my-5.text-center.border-bottom {
+  border-bottom: none !important;
+  margin-top: 24px !important;
+  margin-bottom: 0 !important;
+
+  color: #fff;
+  min-height: calc(100vh - 140px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.px-4.pt-5.my-5.text-center.border-bottom .col-lg-6.mx-auto {
+  margin-top: 18px;
+}
+
+.px-4.pt-5.my-5.text-center.border-bottom p.lead.mb-4 {
+  margin-top: 10px;
+  color: rgba(255,255,255,0.80);
+  line-height: 1.55;
+}
+
+.px-4.pt-5.my-5.text-center.border-bottom .d-grid.gap-2.d-sm-flex .btn {
+  border-radius: 999px !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+  font-size: 0.95rem;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+.px-4.pt-5.my-5.text-center.border-bottom .btn.btn-danger {
+  background: rgba(255,255,255,0.92) !important;
+  border-color: rgba(255,255,255,0.75) !important;
+}
+.px-4.pt-5.my-5.text-center.border-bottom .btn.btn-danger a {
+  color: #111 !important;
+  font-weight: 800;
+}
+.px-4.pt-5.my-5.text-center.border-bottom .btn.btn-danger:hover {
+  background: #fff !important;
+}
+
+
+.px-4.pt-5.my-5.text-center.border-bottom .btn.btn-outline-secondary {
+  border-color: rgba(255,255,255,0.55) !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+.px-4.pt-5.my-5.text-center.border-bottom .btn.btn-outline-secondary a {
+  color: rgba(255,255,255,0.95) !important;
+}
+.px-4.pt-5.my-5.text-center.border-bottom .btn.btn-outline-secondary:hover {
+  background: rgba(255,255,255,0.15) !important;
+  border-color: rgba(255,255,255,0.75) !important;
+}
+
+
+.px-4.pt-5.my-5.text-center.border-bottom .overflow-hidden {
+  max-height: 62vh !important;
+  -webkit-mask-image: linear-gradient(#000 85%, transparent);
+  mask-image: linear-gradient(#000 85%, transparent);
+}
+
+
+.px-4.pt-5.my-5.text-center.border-bottom img.img-fluid {
+  max-width: 520px;
+  margin: 28px auto 0;
+  filter: drop-shadow(0 25px 40px rgba(0,0,0,0.35));
+}
+
+/* Animation */
+.px-4.pt-5.my-5.text-center.border-bottom h1.display-4.fw-bold {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp 0.9s ease forwards;
+  animation-delay: 0.12s;
+}
+
+
+.px-4.pt-5.my-5.text-center.border-bottom p.lead.mb-4 {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp 0.95s ease forwards;
+  animation-delay: 0.25s;
+}
+
+/* Buttons */
+.px-4.pt-5.my-5.text-center.border-bottom .d-grid.gap-2.d-sm-flex {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp 0.95s ease forwards;
+  animation-delay: 0.38s;
+}
+
+/* Temple image */
+.px-4.pt-5.my-5.text-center.border-bottom img.img-fluid {
+  opacity: 0;
+  transform: translateY(70px);
+  animation: riseUp 1.8s ease forwards;
+  animation-delay: 0.55s;
+}
+
+/* 2 keyframe */
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes riseUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   FEATURES FIXES
+   ========================= */
+
+#features {
+  color: rgba(255,255,255,0.92);
+}
+
+#features h2,
+#features .fs-1 {
+  color: rgba(255,255,255,0.95) !important;
+}
+
+#features p {
+  color: rgba(255,255,255,0.78);
+  line-height: 1.55;
+}
+
+#features .bi {
+  color: rgba(255,255,255,0.90);
+}
+
+/* =========================
+   COURSES cards FIXES
+   ========================= */
+
+#courses .card {
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.28);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+#courses .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 60px rgba(0,0,0,0.34);
+}
+
+#courses .card-img-top {
+  background: #fff;
+  padding: 18px;
+  object-fit: contain;
+  height: 260px;
+}
+
+#courses .card-body {
+  padding: 18px 18px 16px;
+}
+
+#courses .card-title {
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  margin-bottom: 8px;
+}
+
+#courses .card-text {
+  color: rgba(0,0,0,0.70);
+  line-height: 1.5;
+}
+
+
+#courses .text-success,
+#courses .text-danger {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+#courses .text-success {
+  background: rgba(25,135,84,0.10);
+  color: #146c43 !important;
+}
+
+#courses .text-danger {
+  background: rgba(220,53,69,0.10);
+  color: #b02a37 !important;
+}
+
+#courses .btn {
+  border-radius: 25px;
+  font-weight: 700;
+  padding: 10px 12px;
+}
+
+#courses .btn.btn-secondary {
+  opacity: 0.92;
+}
+
+/* =========================
+   CONTACT section FIXES
+   ========================= */
+
+#contact {
+  color: rgba(255,255,255,0.90);
+}
+
+#contact h1,
+#contact .display-4 {
+  color: rgba(255,255,255,0.95) !important;
+}
+
+#contact p,
+#contact .fs-4 {
+  color: rgba(255,255,255,0.75) !important;
+  font-size: 16px !important;
+}
+
+#contact .btn.btn-danger {
+  border-radius: 150px !important; 
+  font-weight: 700;
+  padding: 10px 14px;
+}
+
+/* Map frame + fix */
+#contact .p-4.border.rounded-3.bg-light {
+  border-radius: 18px !important;
+  overflow: hidden;
+  padding: 0 !important;
+  background: rgba(255,255,255,0.92) !important;
+}
+
+#contact iframe {
+  display: block;
+  width: 100% !important;
+  height: 520px !important;
+  border: 0 !important;
+}
+
+/* =========================
+   FOOTER FIXES
+   ========================= */
+
+footer {
+  padding-top: 28px;
+  padding-bottom: 18px;
+}
+
+footer .text-muted,
+footer .nav-link.text-muted {
+  color: rgba(255,255,255,0.70) !important;
+}
+
+footer .nav-link.text-muted:hover {
+  color: rgba(255,255,255,0.95) !important;
+  text-decoration: none;
+}
+
+footer .border-bottom {
+  border-color: rgba(255,255,255,0.18) !important;
+}
+
+
+
+
+/* =========================
+   DRAW PAGE FIXES 
+   ========================= */
+body:has(#drawCanvas) .navbar.navbar-expand.bg-transparent {
+  position: relative !important;
+  top: auto !important;
+  margin-top: 14px;
+}
+
+body:has(#drawCanvas) .w-50.bg-body-tertiary .my-3.p-3 h2,
+body:has(#drawCanvas) .w-50.bg-body-tertiary .my-3.p-3 p {
+  color: #111 !important;
+}
+
+/* Undo button */
+body:has(#drawCanvas) #undoBtn.btn-undo {
+  color: #111 !important;
+  background: #e9ecef !important;
+  border: 1px solid #ced4da !important;
+  opacity: 1 !important;
+}
+body:has(#drawCanvas) #undoBtn.btn-undo:disabled {
+  color: #111 !important;
+  background: #e9ecef !important;
+  border: 1px solid #ced4da !important;
+  cursor: not-allowed;
+}
+
+/* Result box */
+body:has(#drawCanvas) #resultBox.prediction-box {
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.10);
+  border-radius: 14px !important;
+  padding: 18px !important;
+  text-align: center;
+}
+
+body:has(#drawCanvas) #resultBox #resultMessage {
+  margin-bottom: 12px;
+  font-weight: 800;
+  color: #111;
+}
+
+body:has(#drawCanvas) #resultBox p {
+  margin: 8px 0;
+  color: rgba(0,0,0,0.75);
+}
+
+body:has(#drawCanvas) #recognizedText,
+body:has(#drawCanvas) #expectedChar {
+  font-weight: 800;
+  color: #111;
+}
+
+body:has(#drawCanvas) #resultBox.result-correct {
+  background: #ffffff !important;
+}
+body:has(#drawCanvas) #resultBox.result-incorrect {
+  background: #ffffff !important;
+}
+
+body:has(#drawCanvas) #resultBox .confidence-bar {
+  margin-top: 10px;
+  height: 10px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+body:has(#drawCanvas) #resultBox .confidence-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff7b6b, #e63946);
+}
+
+
+/* =========================
+   COURSES PAGE FIXES
+   ========================= */
+
+/* Practice (draw) button */
+#courses a.btn.btn-danger[href*="/draw"]{
+  background: #111 !important;         
+  border-color: rgba(0,0,0,0.65) !important;
+  color: #fff !important;
+}
+
+/* Hover */
+#courses a.btn.btn-danger[href*="/draw"]:hover{
+  background: #000 !important;
+  border-color: rgba(0,0,0,0.85) !important;
+}
+
+/* Focus/Active */
+#courses a.btn.btn-danger[href*="/draw"]:focus,
+#courses a.btn.btn-danger[href*="/draw"]:active{
+  box-shadow: 0 0 0 0.2rem rgba(0,0,0,0.18) !important;
+}
+
+/* =========================
+   REGISTER PAGE FIXES
+   ========================= */
+
+.text-muted{
+    color: #fff !important;
+}
