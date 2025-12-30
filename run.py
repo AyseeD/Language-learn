@@ -20,9 +20,9 @@ if __name__ == '__main__':
     elif args.seed:
         seed_database()
     else:
-        app.run(
-            host=Config.HOST,
-            port=Config.PORT,
-            debug=Config.DEBUG,
-        )
-
+        if __name__ == '__main__':
+            app.run(
+                host=Config.HOST,
+                port=Config.PORT,
+                debug=Config.DEBUG,
+            )
