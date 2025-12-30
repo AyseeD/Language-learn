@@ -122,7 +122,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" id="closeButton" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-danger" id="confirmPurchase">Confirm Purchase</button>
                 </div>
             </div>
@@ -183,6 +183,7 @@
                 if (data.success) {
                     document.getElementById('purchaseForm').classList.add('d-none');
                     this.classList.add('d-none');
+                    document.getElementById('closeButton').innerText = "Close";
                     successDiv.textContent = data.message;
                     successDiv.classList.remove('d-none');
 
