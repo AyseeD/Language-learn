@@ -11,6 +11,7 @@ from app import get_session
 
 course = Blueprint('course', __name__)
 
+
 @course.route('/<course_name>/draw', methods=['GET'])
 @login_required
 def draw(course_name):
@@ -78,21 +79,12 @@ def draw(course_name):
         # Calculate progress percentage
         progress_percentage = (len(learned_character_ids) / len(all_characters)) * 100 if all_characters else 0
 
-        if course_name.lower() == 'hiragana':
-            return render_template('customer/draw.html',  # Use the draw.html in templates root
-                                   character=selected_character,
-                                   course=course,
-                                   progress=progress_percentage)
-        else:
-            return render_template(
-                'customer/draw.html',  # Use customer/draw.html for other courses
-                character=selected_character,
-                course=course,
-                progress=progress_percentage
-            )
+        return render_template('customer/draw.html',
+                               character=selected_character,
+                               course=course,
+                               progress=progress_percentage)
 
 
-# The rest of your existing code remains the same...
 @course.route('/<course_name>/learn', methods=['GET'])
 @login_required
 def learn(course_name):
@@ -113,12 +105,27 @@ def learn(course_name):
             flash("You are not enrolled in this course", "error")
             return redirect(url_for('customer.courses'))
 
-        # Get all characters for this course
-        all_characters = db.query(Character).filter_by(course_id=course_obj.id).all()
+        # Get all characters for this course ordered by ID
+        all_characters = db.query(Character).filter_by(course_id=course_obj.id).order_by(Character.id).all()
 
         if not all_characters:
             flash("No characters available for this course", "error")
-            return redirect(url_for('customer.courses'))  # Changed from main.index
+            return redirect(url_for('customer.courses'))
+
+        # Get current character from session or start with first
+        current_character_id = session.get('current_character_id')
+
+        if current_character_id:
+            # Find the character in the list
+            selected_character = next((char for char in all_characters if char.id == current_character_id),
+                                      all_characters[0])
+        else:
+            # Start with first character
+            selected_character = all_characters[0]
+
+        # Store in session for tracking
+        session['current_character_id'] = selected_character.id
+        session['current_course_id'] = course_obj.id
 
         # Get user's progress
         learned_progress = db.query(Progress).filter_by(
@@ -128,22 +135,6 @@ def learn(course_name):
         ).all()
 
         learned_character_ids = {p.character_id for p in learned_progress}
-
-        # Filter unlearned characters
-        unlearned_characters = [
-            char for char in all_characters
-            if char.id not in learned_character_ids
-        ]
-
-        # If all learned, pick from all characters
-        available_characters = unlearned_characters if unlearned_characters else all_characters
-
-        # Select random character
-        selected_character = random.choice(available_characters)
-
-        # Store in session for tracking
-        session['current_character_id'] = selected_character.id
-        session['current_course_id'] = course_obj.id
 
         # Calculate progress percentage
         progress_percentage = (len(learned_character_ids) / len(all_characters)) * 100 if all_characters else 0
@@ -223,6 +214,19 @@ def learn_next(course_name):
 
         db.commit()
 
+        # Get all characters ordered by ID
+        all_characters = db.query(Character).filter_by(course_id=current_course_id).order_by(Character.id).all()
+
+        # Find current character index
+        current_index = next((i for i, char in enumerate(all_characters) if char.id == current_character_id), 0)
+
+        # Get next character
+        next_index = (current_index + 1) % len(all_characters)
+        next_character = all_characters[next_index]
+
+        # Update session with next character
+        session['current_character_id'] = next_character.id
+
         # Redirect to learn page to show next character
         return redirect(url_for('course.learn', course_name=course_name))
 
@@ -231,21 +235,40 @@ def learn_next(course_name):
 @login_required
 def learn_previous(course_name):
     with get_session() as db:
+        # Get current character from session
+        current_character_id = session.get('current_character_id')
+        current_course_id = session.get('current_course_id')
+
+        if not current_character_id or not current_course_id:
+            flash("Session expired. Please start again.", "error")
+            return redirect(url_for('course.learn', course_name=course_name))
+
+        # Unlearn current character (mark as not learned)
+        progress = db.query(Progress).filter_by(
+            user_id=current_user.id,
+            course_id=current_course_id,
+            character_id=current_character_id
+        ).first()
+
+        if progress:
+            # Update existing progress to unlearn
+            progress.learned = False
+            progress.answered = False
+            progress.updated_at = datetime.utcnow()
+            db.commit()
+
         # Get course details
         course_obj = db.query(Course).filter_by(name=course_name).first()
         if not course_obj:
             flash("Course not found", "error")
-            return redirect(url_for('customer.courses'))  # Changed from main.index
+            return redirect(url_for('customer.courses'))
 
-        # Get all characters for this course
-        all_characters = db.query(Character).filter_by(course_id=course_obj.id).all()
+        # Get all characters ordered by ID
+        all_characters = db.query(Character).filter_by(course_id=course_obj.id).order_by(Character.id).all()
 
         if not all_characters:
             flash("No characters available", "error")
-            return redirect(url_for('customer.courses'))  # Changed from main.index
-
-        # Get current character from session
-        current_character_id = session.get('current_character_id')
+            return redirect(url_for('customer.courses'))
 
         # Find current character index
         current_index = next((i for i, char in enumerate(all_characters) if char.id == current_character_id), 0)
@@ -256,21 +279,6 @@ def learn_previous(course_name):
 
         # Update session
         session['current_character_id'] = selected_character.id
-        session['current_course_id'] = course_obj.id
 
-        # Get user's progress for percentage calculation
-        learned_progress = db.query(Progress).filter_by(
-            user_id=current_user.id,
-            course_id=course_obj.id,
-            learned=True
-        ).all()
-
-        learned_character_ids = {p.character_id for p in learned_progress}
-        progress_percentage = (len(learned_character_ids) / len(all_characters)) * 100 if all_characters else 0
-
-        return render_template(
-            'customer/learn.html',
-            character=selected_character,
-            course=course_obj,
-            progress=progress_percentage
-        )
+        # Redirect to learn page
+        return redirect(url_for('course.learn', course_name=course_name))

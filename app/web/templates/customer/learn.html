@@ -7,7 +7,7 @@
                 <!-- Progress Bar -->
                 <div class="mb-3">
                     <div class="progress" style="height: 25px;">
-                        <div class="progress-bar" role="progressbar"
+                        <div class="progress-bar bg-danger" role="progressbar"
                              style="width: {{ progress }}%;"
                              aria-valuenow="{{ progress }}"
                              aria-valuemin="0"
@@ -27,7 +27,7 @@
                         </div>
 
                         <!-- Audio Button -->
-                        <button class="btn btn-outline-primary mb-3" onclick="playAudio()">
+                        <button class="btn btn-outline-danger mb-3" onclick="playAudio()">
                             <i class="bi bi-volume-up"></i> Play Audio
                         </button>
 
@@ -45,7 +45,7 @@
                                 <button type="submit" class="w-100 btn btn-secondary">Previous</button>
                             </form>
                             <form method="POST" action="{{ url_for('course.learn_next', course_name=course.name) }}" class="w-50">
-                                <button type="submit" class="w-100 btn btn-primary">Next</button>
+                                <button type="submit" class="w-100 btn btn-danger">Next</button>
                             </form>
                         </div>
                     </div>

@@ -11,6 +11,14 @@ body {
     color: white;
 }
 
+.admin {
+  background:
+    radial-gradient(1200px 600px at 50% 0%,
+      rgba(255,255,255,0.10) 0%,
+      rgba(255,255,255,0.00) 45%),
+    linear-gradient(180deg, #7f0f14 0%, #ca2121 5%, #fbfbfb 100%);
+}
+
 .flash {
     position: absolute;
     right: 5px;

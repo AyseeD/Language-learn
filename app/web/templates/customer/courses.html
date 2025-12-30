@@ -5,55 +5,200 @@
     <!-- Courses -->
     <div id="courses" class="container px-4 py-5">
         <h2 class="pb-2 fs-1">Choose A Courses To Study</h2>
-        <div class="container row">
+
+        <div class="row align-items-stretch">
             <div class="col-sm-4">
-                <div class="card">
+                <div class="card h-100">
                     <img src="/img/hiragana.svg" class="card-img-top" alt="Hiragana">
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Learn Hiragana</h5>
-                        <p class="card-text">Hiragana is the foundation of the Japanese writing system, used for native
-                            words, grammar, and verb endings. It's essential for beginners to learn first.</p>
-                        <div class="d-flex btn-row gap-2" role="group">
-                            <a href="{{ url_for("course.learn", course_name="Hiragana") }}"
+                        <p class="card-text">
+                            Hiragana is the foundation of the Japanese writing system, used for native
+                            words, grammar, and verb endings. It's essential for beginners to learn first.
+                        </p>
+                        {% set course_id = 1 %}
+                        {% if course_id in enrolled_courses %}
+                        <div class="d-flex btn-row gap-2 mt-auto" role="group">
+                            <a href="{{ url_for('course.learn', course_name='Hiragana') }}"
                                class="w-50 btn btn-danger">Learn</a>
-                            <a href="{{ url_for("course.draw", course_name="Hiragana") }}"
+                            <a href="{{ url_for('course.draw', course_name='Hiragana') }}"
                                class="w-50 btn btn-danger">Practice</a>
                         </div>
+                        {% else %}
+                        <div class="d-flex btn-row gap-2 mt-auto" role="group">
+                            <button class="w-100 btn btn-success buy-btn"
+                                    data-course="Hiragana"
+                                    data-price="{{ course_prices.get('Hiragana', 0) }}">
+                                Buy - ${{ course_prices.get('Hiragana', 0) }}
+                            </button>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-4">
-                <div class="card">
+                <div class="card h-100">
                     <img src="/img/katakana.svg" class="card-img-top" alt="Katakana">
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Learn Katakana</h5>
-                        <p class="card-text">Katakana is primarily used for foreign loanwords, names, and onomatopoeia.
-                            It's the second script you'll need to master after Hiragana.</p>
-                        <div class="d-flex btn-row gap-2" role="group">
-                            <a href="{{ url_for("course.learn", course_name="Katakana") }}"
+                        <p class="card-text">
+                            Katakana is primarily used for foreign loanwords, names, and onomatopoeia.
+                            It's the second script you'll need to master after Hiragana.
+                        </p>
+                        {% set course_id = 2 %}
+                        {% if course_id in enrolled_courses %}
+                        <div class="d-flex btn-row gap-2 mt-auto" role="group">
+                            <a href="{{ url_for('course.learn', course_name='Katakana') }}"
                                class="w-50 btn btn-danger">Learn</a>
                             <a href="#" class="w-50 btn btn-secondary">Coming Soon</a>
                         </div>
+                        {% else %}
+                        <div class="d-flex btn-row gap-2 mt-auto" role="group">
+                            <button class="w-100 btn btn-success buy-btn"
+                                    data-course="Katakana"
+                                    data-price="{{ course_prices.get('Katakana', 0) }}">
+                                Buy - ${{ course_prices.get('Katakana', 0) }}
+                            </button>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-4">
-                <div class="card">
+                <div class="card h-100">
                     <img src="/img/kanji.svg" class="card-img-top" alt="Kanji">
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Learn Kanji</h5>
-                        <p class="card-text">Kanji are characters borrowed from Chinese, representing entire words or
+                        <p class="card-text">
+                            Kanji are characters borrowed from Chinese, representing entire words or
                             concepts. They're more complex but crucial for reading and writing in Japanese.
                         </p>
-                        <div class="d-flex btn-row gap-2" role="group">
-                            <a href="{{ url_for("course.learn", course_name="Kanji") }}"
+                        {% set course_id = 3 %}
+                        {% if course_id in enrolled_courses %}
+                        <div class="d-flex btn-row gap-2 mt-auto" role="group">
+                            <a href="{{ url_for('course.learn', course_name='Kanji') }}"
                                class="w-50 btn btn-danger">Learn</a>
                             <a href="#" class="w-50 btn btn-secondary">Coming Soon</a>
                         </div>
+                        {% else %}
+                        <div class="d-flex btn-row gap-2 mt-auto" role="group">
+                            <button class="w-100 btn btn-success buy-btn"
+                                    data-course="Kanji"
+                                    data-price="{{ course_prices.get('Kanji', 0) }}">
+                                Buy - ${{ course_prices.get('Kanji', 0) }}
+                            </button>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
 
+    <!-- Purchase Modal -->
+    <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="purchaseModalLabel">Purchase Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="purchaseForm">
+                        <p>You are purchasing: <strong id="courseName"></strong></p>
+                        <p>Price: <strong id="coursePrice"></strong></p>
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">Credit Card Number</label>
+                            <input type="text" class="form-control" id="cardNumber"
+                                   placeholder="1234 5678 9012 3456" maxlength="19">
+                            <div class="form-text">Enter your credit card number</div>
+                        </div>
+                        <div id="errorMessage" class="alert alert-danger d-none"></div>
+                    </div>
+                    <div id="successMessage" class="alert alert-success d-none">
+                        <strong>Success!</strong> You have been enrolled in the course.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmPurchase">Confirm Purchase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedCourse = '';
+        let selectedPrice = 0;
+
+        // Handle Buy button clicks
+        document.querySelectorAll('.buy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                selectedCourse = this.dataset.course;
+                selectedPrice = this.dataset.price;
+
+                document.getElementById('courseName').textContent = selectedCourse;
+                document.getElementById('coursePrice').textContent = '$' + selectedPrice;
+                document.getElementById('cardNumber').value = '';
+                document.getElementById('errorMessage').classList.add('d-none');
+                document.getElementById('successMessage').classList.add('d-none');
+                document.getElementById('purchaseForm').classList.remove('d-none');
+                document.getElementById('confirmPurchase').classList.remove('d-none');
+
+                const modal = new bootstrap.Modal(document.getElementById('purchaseModal'));
+                modal.show();
+            });
+        });
+
+        // Handle purchase confirmation
+        document.getElementById('confirmPurchase').addEventListener('click', async function() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+
+            errorDiv.classList.add('d-none');
+
+            if (!cardNumber) {
+                errorDiv.textContent = 'Please enter a credit card number';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const response = await fetch('/dashboard/purchase', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        course_name: selectedCourse,
+                        card_number: cardNumber
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('purchaseForm').classList.add('d-none');
+                    this.classList.add('d-none');
+                    successDiv.textContent = data.message;
+                    successDiv.classList.remove('d-none');
+
+                    // Reload page after 2 seconds
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    errorDiv.textContent = data.message;
+                    errorDiv.classList.remove('d-none');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'An error occurred. Please try again.';
+                errorDiv.classList.remove('d-none');
+            }
+        });
+    </script>
+
+{% endblock %}

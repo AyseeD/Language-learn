@@ -202,9 +202,9 @@ class HiraganaRecognizer:
             if confidence > 0.95:
                 return "🎉 Perfect! Excellent drawing!"
             elif confidence > 0.85:
-                return "👍 Very good! Character recognized correctly."
+                return "👍 Very good!"
             else:
-                return "✅ Correct character, but could be clearer."
+                return "✅ Correct character, but could have drawn better."
         else:
             if confidence > 0.7:
                 return "⚠️ Close, but not quite right. Try again!"

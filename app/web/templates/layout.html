@@ -17,7 +17,7 @@
 </head>
 
 {% block body %}
-    <body>
+    <body {% if current_user.role_code == 'ADMIN' %}class="admin"{% endif %}>
     <nav class="navbar navbar-expand bg-transparent">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
@@ -84,26 +84,32 @@
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
         {% for message in get_flashed_messages() %}
-            <div class="toast align-items-center border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast align-items-center border-0 shadow bg-dark text-light" role="alert" aria-live="assertive"
+                 aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         {{ message }}
                     </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    <button type="button" class="btn-close me-2 m-auto text-light" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
                 </div>
             </div>
         {% endfor %}
     </div>
 
-    <footer class="d-flex flex-column justify-content-center">
-        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="/#features" class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="/#courses" class="nav-link px-2 text-muted">Courses</a></li>
-            <li class="nav-item"><a href="/#contact" class="nav-link px-2 text-muted">Contact Us</a></li>
-        </ul>
-        <p class="text-center text-muted">© 2025 The C018 Freezer Incubator, Inc</p>
-    </footer>
+    {% if current_user.role_code != 'ADMIN' %}
+        <footer class="d-flex flex-column justify-content-center">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="/#features" class="nav-link px-2 text-muted">Features</a></li>
+                <li class="nav-item"><a href="/#courses" class="nav-link px-2 text-muted">Courses</a></li>
+                <li class="nav-item"><a href="/#contact" class="nav-link px-2 text-muted">Contact Us</a></li>
+            </ul>
+            <p class="text-center text-muted">© 2025 The C018 Freezer Incubator, Inc</p>
+        </footer>
+    {% else %}
+        <div class="mt-4"></div>
+    {% endif %}
 
     {% block scripts %}
         <script
@@ -113,9 +119,9 @@
         ></script>
         <script>
             // Auto-initialize and show all toasts
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 var toastElList = [].slice.call(document.querySelectorAll('.toast'));
-                toastElList.forEach(function(toastEl) {
+                toastElList.forEach(function (toastEl) {
                     var toast = new bootstrap.Toast(toastEl, {
                         autohide: true,
                         delay: 4000
