@@ -7,7 +7,7 @@ from app.database.seed import clear_database, seed_database
 app = create_app()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='KanaLearn Flask Application')
+    parser = argparse.ArgumentParser(description='Japanese Learning Hub Flask Application')
     parser.add_argument('--create', action='store_true', help='Create the database before seeding')
     parser.add_argument('--clear', action='store_true', help='Clear the database before seeding')
     parser.add_argument('--seed', action='store_true', help='Seed the database with predefined information')
@@ -20,9 +20,8 @@ if __name__ == '__main__':
     elif args.seed:
         seed_database()
     else:
-        if __name__ == '__main__':
-            app.run(
-                host=Config.HOST,
-                port=Config.PORT,
-                debug=Config.DEBUG,
-            )
+        app.run(
+            host=Config.HOST,
+            port=Config.PORT,
+            debug=Config.DEBUG,
+        )

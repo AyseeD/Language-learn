@@ -1,4 +1,4 @@
-# KanaLearn
+# Japanese Learning Hub
 
 A Flask-based web application for learning Japanese characters (Hiragana, Katakana and Kanji) with user authentication,
 course enrollment, and progress tracking.

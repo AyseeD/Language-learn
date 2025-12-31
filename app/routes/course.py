@@ -45,38 +45,52 @@ def draw(course_name):
         if not course:
             return "Course not found", 404
 
+        # Check if we have a practice list in session
+        practice_list = session.get('practice_list', [])
+
+        # If practice list is empty, create a new one
+        if not practice_list:
+            # Get user's learned characters
+            learned_progress = db.query(Progress).filter_by(
+                user_id=current_user.id,
+                course_id=course_id,
+                learned=True
+            ).all()
+
+            # If no learned characters at all, redirect with message
+            if not learned_progress:
+                flash('You need to learn some characters before practicing. Please use the Learn button first.',
+                      'warning')
+                return redirect(url_for('customer.courses'))
+
+            # Create practice list from learned character IDs
+            practice_list = [p.character_id for p in learned_progress]
+            session['practice_list'] = practice_list
+
         # Get all characters for this course
         all_characters = db.query(Character).filter_by(course_id=course_id).all()
 
         if not all_characters:
             return "No characters available for this course", 404
 
-        # Get user's progress
-        learned_progress = db.query(Progress).filter_by(
-            user_id=current_user.id,
-            course_id=course_id,
-            learned=True
-        ).all()
+        # Select random character from practice list
+        selected_character_id = random.choice(practice_list)
+        selected_character = next((char for char in all_characters if char.id == selected_character_id), None)
 
-        learned_character_ids = {p.character_id for p in learned_progress}
-
-        # Filter unlearned characters
-        unlearned_characters = [
-            char for char in all_characters
-            if char.id not in learned_character_ids
-        ]
-
-        # If all learned, pick from all characters
-        available_characters = unlearned_characters if unlearned_characters else all_characters
-
-        # Select random character
-        selected_character = random.choice(available_characters)
+        if not selected_character:
+            return "Character not found", 404
 
         # Store in session for verification
         session['current_character_id'] = selected_character.id
         session['current_course_id'] = course_id
 
         # Calculate progress percentage
+        learned_progress = db.query(Progress).filter_by(
+            user_id=current_user.id,
+            course_id=course_id,
+            learned=True
+        ).all()
+        learned_character_ids = {p.character_id for p in learned_progress}
         progress_percentage = (len(learned_character_ids) / len(all_characters)) * 100 if all_characters else 0
 
         return render_template('customer/draw.html',
@@ -282,3 +296,70 @@ def learn_previous(course_name):
 
         # Redirect to learn page
         return redirect(url_for('course.learn', course_name=course_name))
+
+
+@course.route('/<course_name>/draw/next', methods=['POST'])
+@login_required
+def draw_next(course_name):
+    with get_session() as db:
+        # Get current character from session
+        current_character_id = session.get('current_character_id')
+        current_course_id = session.get('current_course_id')
+
+        if not current_character_id or not current_course_id:
+            flash("Session expired. Please start again.", "error")
+            return redirect(url_for('course.draw', course_name=course_name))
+
+        # Get practice list from session
+        practice_list = session.get('practice_list', [])
+
+        # Remove the current character from the practice list
+        if current_character_id in practice_list:
+            practice_list.remove(current_character_id)
+            session['practice_list'] = practice_list
+
+        # Mark current character as answered in DB
+        progress = db.query(Progress).filter_by(
+            user_id=current_user.id,
+            course_id=current_course_id,
+            character_id=current_character_id
+        ).first()
+
+        if progress:
+            progress.answered = True
+            progress.updated_at = datetime.utcnow()
+            db.commit()
+
+        # If practice list is empty, show success message and redirect
+        if not practice_list:
+            session.pop('practice_list', None)  # Clear the practice list
+            flash('Congratulations! You have finished practicing all learned characters.', 'success')
+            return redirect(url_for('customer.courses'))
+
+        # Redirect to draw page to show next character
+        return redirect(url_for('course.draw', course_name=course_name))
+
+
+@course.route('/<course_name>/draw/skip', methods=['POST'])
+@login_required
+def draw_skip(course_name):
+    # Get current character from session
+    current_character_id = session.get('current_character_id')
+
+    if current_character_id:
+        # Get practice list from session
+        practice_list = session.get('practice_list', [])
+
+        # Remove the current character from the practice list (same as next)
+        if current_character_id in practice_list:
+            practice_list.remove(current_character_id)
+            session['practice_list'] = practice_list
+
+        # If practice list is empty, show success message and redirect
+        if not practice_list:
+            session.pop('practice_list', None)
+            flash('Congratulations! You have finished practicing all learned characters.', 'success')
+            return redirect(url_for('customer.courses'))
+
+    # Redirect to draw page to get next character
+    return redirect(url_for('course.draw', course_name=course_name))

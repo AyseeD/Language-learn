@@ -74,7 +74,9 @@
             <p><strong>Expected:</strong> <span id="expectedChar" style="font-size: 24px;">{{ character.kana }}</span>
             </p>
             <div id="nextActions" style="margin-top: 15px; display: none;">
-                <button id="nextBtn" class="btn btn-success">Next Character →</button>
+                <form method="POST" action="{{ url_for('course.draw_next', course_name=course.name) }}">
+                    <button type="submit" class="btn btn-success">Next Character →</button>
+                </form>
             </div>
         </div>
     </div>
@@ -98,7 +100,7 @@
     function initializeCanvas() {
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 25; // Thicker strokes for clearer recognition
+        ctx.lineWidth = 25;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         ctx.strokeStyle = "#000000";
@@ -139,7 +141,6 @@
         lastY = coords.y;
         drawing = true;
 
-        // Draw a dot at the start point
         ctx.beginPath();
         ctx.arc(lastX, lastY, ctx.lineWidth / 2, 0, Math.PI * 2);
         ctx.fillStyle = "#000000";
@@ -152,7 +153,6 @@
 
         const coords = getCoordinates(e);
 
-        // Smooth line drawing
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
         ctx.lineTo(coords.x, coords.y);
@@ -186,7 +186,6 @@
     canvas.addEventListener("touchend", stopDrawing);
     canvas.addEventListener("touchcancel", stopDrawing);
 
-    // Clear button
     document.getElementById("clearBtn").addEventListener("click", () => {
         initializeCanvas();
         undoStack.length = 0;
@@ -194,10 +193,8 @@
         document.getElementById("resultBox").style.display = "none";
     });
 
-    // Undo button
     document.getElementById("undoBtn").addEventListener("click", undo);
 
-    // Update the submit button event listener
     document.getElementById("submitBtn").addEventListener("click", async () => {
         const resultBox = document.getElementById("resultBox");
         const resultMessage = document.getElementById("resultMessage");
@@ -205,7 +202,6 @@
         const nextActions = document.getElementById("nextActions");
         const expectedChar = document.getElementById("expectedChar");
 
-        // Check if canvas is empty
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const pixels = imageData.data;
         let isEmpty = true;
@@ -228,9 +224,6 @@
             return;
         }
 
-        console.log(`Drawing has ${pixelCount} pixels`);
-
-        // Show loading state
         resultBox.style.display = "block";
         resultBox.className = "prediction-box";
         resultMessage.textContent = "Analyzing your drawing...";
@@ -238,22 +231,14 @@
         nextActions.style.display = "none";
 
         try {
-            // Create a temporary canvas at original size for export
             const exportCanvas = document.createElement('canvas');
             exportCanvas.width = 500;
             exportCanvas.height = 400;
             const exportCtx = exportCanvas.getContext('2d');
-
-            // Draw the scaled content to export canvas
             exportCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 500, 400);
-
-            // Convert to PNG
             const dataURL = exportCanvas.toDataURL("image/png", 1.0);
 
-            console.log(" Sending image to server...");
-
-            // Send to the correct endpoint - FIXED URL
-            const res = await fetch("/hiragana/predict", {  // Changed from /dashboard/kanji/predict
+            const res = await fetch("/hiragana/predict", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -276,8 +261,6 @@
                 throw new Error(data.error || "Prediction failed");
             }
 
-            console.log("Prediction result:", data);
-
             if (!data.recognized_text || data.recognized_text === "") {
                 recognizedText.textContent = "(nothing)";
                 resultMessage.textContent = "Could not recognize any character. Try drawing more clearly!";
@@ -285,7 +268,6 @@
             } else {
                 recognizedText.textContent = data.recognized_text;
 
-                // Add romaji if available
                 if (data.romaji && data.romaji !== data.recognized_text) {
                     recognizedText.innerHTML = `${data.recognized_text} <span style="font-size: 16px; color: #666;">(${data.romaji})</span>`;
                 }
@@ -296,7 +278,6 @@
                     resultBox.classList.add("result-correct");
                     nextActions.style.display = "block";
 
-                    // Show confetti for correct answer
                     if (typeof confetti === 'function' && data.confidence > 0.95) {
                         confetti({
                             particleCount: 100,
@@ -307,7 +288,6 @@
                 } else {
                     resultBox.classList.add("result-incorrect");
 
-                    // Show top predictions if incorrect
                     if (data.top_predictions && data.top_predictions.length > 1) {
                         const topPredictions = data.top_predictions.slice(1, 3).map(p =>
                             `${p.character} (${p.romaji || p.character})`
@@ -319,17 +299,13 @@
                     }
                 }
 
-                // Show confidence
                 if (data.confidence) {
                     const confidencePercent = Math.round(data.confidence * 100);
                     resultMessage.innerHTML += `<br><small>Confidence: ${confidencePercent}%</small>`;
 
-                    // Add visual confidence bar
                     const confidenceBar = document.createElement('div');
                     confidenceBar.className = 'confidence-bar';
-                    confidenceBar.innerHTML = `
-                    <div class="confidence-fill" style="width: ${confidencePercent}%"></div>
-                `;
+                    confidenceBar.innerHTML = `<div class="confidence-fill" style="width: ${confidencePercent}%"></div>`;
                     resultMessage.appendChild(confidenceBar);
                 }
             }
@@ -340,42 +316,23 @@
             resultBox.classList.add("result-incorrect");
             console.error("Submission error:", err);
 
-            // Show more detailed error for debugging
             if (err.message.includes("405")) {
                 resultMessage.textContent += " (Method not allowed - check endpoint configuration)";
             }
         }
     });
 
-    // Update the skip button event listener
-    document.getElementById("skipBtn").addEventListener("click", async () => {
-        if (!confirm("Skip this character? It will be marked as not learned.")) return;
+    document.getElementById("skipBtn").addEventListener("click", () => {
+        if (!confirm("Skip this character and move to the next one?")) return;
 
-        try {
-            const res = await fetch("/hiragana/skip", { 
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            const data = await res.json();
-            if (data.success && data.redirect) {
-                window.location.href = data.redirect;
-            } else if (data.error) {
-                alert("Error: " + data.error);
-            }
-        } catch (err) {
-            console.error("Skip error:", err);
-            alert("An error occurred while skipping the character.");
-        }
+        // Create and submit a form to the skip endpoint
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{{ url_for('course.draw_skip', course_name=course.name) }}";
+        document.body.appendChild(form);
+        form.submit();
     });
 
-    // Update the next button event listener
-    document.getElementById("nextBtn").addEventListener("click", () => {
-        // Reload the page to get a new character
-        window.location.reload();
-    });
     canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 </script>
 {% endblock %}
