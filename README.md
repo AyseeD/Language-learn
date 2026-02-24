@@ -1,6 +1,6 @@
 # Japanese Learning Hub
 
-A Flask-based web application for learning Japanese characters (Hiragana, Katakana and Kanji) with user authentication,
+A Flask-based web application for learning Japanese characters (Hiragana, Katakana and Kanji) using a local CNN model with user authentication,
 course enrollment, and progress tracking.
 
 ## Features
