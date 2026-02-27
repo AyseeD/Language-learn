@@ -3,6 +3,9 @@
 A Flask-based web application for learning Japanese characters (Hiragana, Katakana and Kanji) using a local CNN model with user authentication,
 course enrollment, and progress tracking.
 
+
+<img width="1090" height="608" alt="Ekran görüntüsü 2026-02-27 111038" src="https://github.com/user-attachments/assets/9994da3b-7d39-44d0-8412-ec7e56bb3b2a" />
+
 ## Features
 
 - User authentication with role-based access (Admin and Customer)
